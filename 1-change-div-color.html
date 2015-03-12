@@ -1,0 +1,151 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>更改div的颜色，高度和宽度</title>
+	<style>
+	#main{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 350px;
+		height: 400px;
+		background: #f8f8f8;
+		margin-top: -200px;
+		margin-left: -200px;
+	}
+	#div0{
+		width: 100px;
+		height: 100px;
+		margin: 0 auto;
+		border: 1px solid #000;
+	}
+	#open-options{
+		width: 100%;
+		height: 40px;
+		margin-bottom: 50px;
+	}
+	ul,
+	li{
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	#options{
+		position: absolute;
+		padding: 10px;
+		border: 1px solid #000;
+		left: 50%;
+		top: 50%;
+		margin-top: -200px;
+		margin-left: 149px;
+	}
+	.child-ul{
+		margin: 10px 0;
+	}
+	.child-ul li{
+		display: inline-block;
+		width: 30px;
+		height: 30px;
+		text-align: center;
+		line-height: 30px;
+		border: 1px solid #000;
+		cursor: pointer;
+	}
+	#button-list{
+		margin: 0;
+	}
+	#button-list li{
+		width: 50px;
+		border: none;
+	}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<button id="open-options">点击修改div的样式</button>
+		<div id="div0">我是div</div>
+	</div>
+	<ul id="options" style="display:none;">
+			<li>
+				选择背景
+				<ul id="background" class="child-ul">
+					<li>red</li>
+					<li>yellow</li>
+					<li>blue</li>
+				</ul>
+			</li>
+			<li>
+				选择宽度
+				<ul id="choose-width" class="child-ul">
+					<li>100</li>
+					<li>200</li>
+					<li>300</li>
+				</ul>
+			</li>
+			<li>
+				选择高度
+				<ul id="choose-height" class="child-ul">
+					<li>100</li>
+					<li>200</li>
+					<li>300</li>
+				</ul>
+			</li>
+			<li>
+				<ul id="button-list" class="child-ul">
+					<li><button id="recover">恢复</button></li>
+					<li><button id="ok">确定</button></li>
+				</ul>
+			</li>
+		</ul>
+	<script>
+	window.onload = function() {
+		var btnOpenOptions = document.getElementById('open-options');
+		var options = document.getElementById('options');
+		var div0 = document.getElementById('div0');
+
+		var childBack = document.getElementById('background').getElementsByTagName('li');
+		var childWidth = document.getElementById('choose-width').getElementsByTagName('li');
+		var childHeight = document.getElementById('choose-height').getElementsByTagName('li');
+
+		var recover = document.getElementById('recover');
+		var ok = document.getElementById('ok');
+
+		btnOpenOptions.onclick = function() {
+			console.log('display = '+options.style.display);
+			if (options.style.display === 'none') {
+				options.style.display = 'block';
+			}else{
+				options.style.display = 'none';
+			}
+		}
+
+		recover.onclick = function() {
+			div0.setAttribute('style', '');
+		}
+		ok.onclick = function() {
+			options.style.display = 'none';
+		}
+
+		for (var i = 0; i < childBack.length; i++) {
+			childBack[i].onclick = function() {
+				div0.style.backgroundColor = this.innerHTML;
+			}
+		};
+
+		for (var i = 0; i < childWidth.length; i++) {
+			childWidth[i].onclick = function() {
+				div0.style.width = this.innerHTML+'px';
+			}
+		};
+
+		for (var i = 0; i < childHeight.length; i++) {
+			childHeight[i].onclick = function() {
+				div0.style.height = this.innerHTML+'px';
+			}
+		};
+	}
+	</script>
+</body>
+</html>
