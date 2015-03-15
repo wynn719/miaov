@@ -1,0 +1,106 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片排序</title>
+	<style>
+	#outer{background-color: #dddddd;padding: 10px;width: 600px;margin: 0 auto;}
+	.button-group{width: 100%;text-align: center;margin: 10px auto;}
+	button{width: 100px;height: 30px;background-color: orange;color: white;line-height: 30px;border: none;cursor: pointer;}
+	.gallery{}
+	ul, li{list-style: none;margin: 5px 0;padding: 0;}
+	li{display: inline-block;*display: inline;*zoom: 1;width: 132px;height: 100px;border: 1px solid #000;padding: 5px;background-color: #fff;}
+	li img{width: 100%;height: 80px;}
+	li p{margin: 0;padding: 0;background-color: #333333;color: white;text-align: center;}
+	</style>
+</head>
+<body>
+	<div id="outer">
+		<div class="button-group">
+			<button>从大到小</button>
+			<button>打乱顺序</button>
+		</div>
+		<div class="gallery">
+			<ul>
+				<li>
+					<img src="" alt="">
+					<p></p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p></p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p></p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p></p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p></p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p></p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p></p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p></p>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script>
+	window.onload = function() {
+		var aBtn = document.getElementsByTagName('button'),
+			oUl = document.getElementsByTagName('ul')[0];
+			aLi = oUl.getElementsByTagName('li'),
+			aImgData = ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg','08.jpg'],
+			aImgInfo = ['01图片','02图片','03图片','04图片','05图片','06图片','07图片','08图片'],
+			arr = [];
+
+			function init () {
+				for (var i = 0; i < aLi.length; i++) {
+					var oImg = aLi[i].getElementsByTagName('img')[0];
+					var oP = aLi[i].getElementsByTagName('p')[0];
+					oImg.src = 'images/'+aImgData[i];
+					oP.innerHTML = aImgInfo[i];
+					arr.push(aLi[i].innerHTML);
+				};
+			}
+			init();
+
+			aBtn[0].on = true;
+			aBtn[0].onclick = function () {
+				arr.reverse();
+				work(arr);
+				this.innerHTML = this.on ? '从大到小' : '从小到大'
+				this.on = !this.on;
+			}
+
+			aBtn[1].onclick = function () {
+				arr.sort(function () {
+					return Math.random() - 0.5;
+				});
+				work(arr);
+			}
+
+			function work (arr) {
+				var str = '';
+				for(var i = 0;i<arr.length;i++){
+					str += '<li>'+arr[i]+'</li>';
+				};
+				oUl.innerHTML = str;
+			}
+	}
+	</script>
+</body>
+</html>
