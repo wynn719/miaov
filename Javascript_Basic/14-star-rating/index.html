@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>05星级评分系统</title>
+  <style type="text/css">
+  #outer{width: 500px;margin:0 auto;}
+  span{float:left;}
+  #star-rating{display:inline;float:left;position: relative;}
+  ul{margin:0;margin-left:10px;padding:0;list-style:none;float:left;}
+  li{float:left;background-image:url('images/star.png');background-position:top;background-repeat: no-repeat;width: 19px;height: 19px;cursor: pointer;}
+  .span-content{position: absolute;border: 1px solid yellow;top: 26px;left: 10px;font-size: 12px;padding: 4px;display: none;}
+  p{font-size: 12px;margin:0;margin-left: 10px;float:left;}
+  .current{background-position: bottom;}
+  strong{color:red;}
+  </style>
+  <script type="text/javascript">
+  var spanContent = [
+    "很不满意|差得太离谱，与卖家描述的严重不符，非常不满",
+    "不满意|部分有破损，与卖家描述的不符，不满意",
+    "一般|质量一般，没有卖家描述的那么好",
+    "满意|质量不错，与卖家描述的基本一致，还是挺满意的",
+    "非常满意|质量非常好，与卖家描述的完全一致，非常满意"
+  ];
+  var lastRating = 0;
+  var lastClickStatu = false;
+
+  window.onload = function(){
+    var oLi = document.getElementsByTagName('li');
+    var oSpan = document.getElementsByTagName('span')[1];
+    var oP = document.getElementsByTagName('p')[0];
+
+    for (var i = 0; i < oLi.length; i++) {
+      oLi[i].index = i;//记录当前的鼠标指向星星数
+
+      oLi[i].onmouseover = function(){
+        //复原星星状态
+        defaultStar(oLi);
+        //选中状态
+        for (var j = 0; j <= this.index; j++) {
+          oLi[j].className = 'current';
+          var text = spanContent[this.index].split('|');
+          oSpan.innerHTML = '<strong>'+(j+1)+'分 '+text[0]+'</strong></br>'+text[1];
+          oSpan.style.display = 'block';
+        }
+      };
+
+      oLi[i].onmouseout = function(){
+        //复原星星状态
+        defaultStar(oLi);
+        //回复上次评分
+        for (var i = 0; i < lastRating; i++) {
+          oLi[i].className = 'current';
+        }
+        oSpan.style.display = 'none';
+      }
+      //星星点击
+      oLi[i].onclick = function(){
+        lastRating = this.index+1;
+        var text = spanContent[this.index].replace("|",",")
+        oP.innerHTML = '('+text+')';
+      }
+    }
+  }
+  //复原
+  function defaultStar(oLi){
+    for (var i = 0; i < oLi.length; i++) {
+      oLi[i].className = '';
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="outer">
+    <span>点击打分</span>
+    <div id="star-rating">
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <span class="span-content"></span>
+      <p></p>
+    </div>
+  </div>
+</body>
+</html>
