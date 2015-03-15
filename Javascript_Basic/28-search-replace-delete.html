@@ -1,0 +1,160 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>查找、替换、删除</title>
+	<style>
+	ul, li{list-style: none;margin: 0;padding: 0;}
+	a{display: block;text-decoration: none;width: 60px;height: 30px;text-align: center;line-height: 30px;color: #333333;background-color:#aaaaaa }
+	a:hover{background-color: #3d283b;color: white;}
+	#outer{position: relative;padding: 20px 60px;}
+	#outer{width: 500px;margin: 0 auto;margin-top: 100px;background-color: #cccccc;}
+	#outer p{background-color: #fff;padding: 10px;line-height: 30px;}
+	#option{display:none; border: 3px solid orange;background-color: #3d283b;}
+	#nav{overflow: hidden;background-color: #aaaaaa;}
+	#nav li{float: left;}
+	#option div{margin: 10px 5px;}
+	#nav li.active a,#option div li.active a{background-color: #3d283b;color: white}
+	#float-nav{position: absolute;right: 0;top: 35px;}
+	#float-nav p{margin: 0;padding: 0;}
+	#float-nav p a{background-color: #000;color: #fff;}
+	#float-nav ul{display: none;}
+	</style>
+	<script src="Simlib.js"></script>
+</head>
+<body>
+	<div id="outer">
+		<p>妙味课堂是一支充满温馨并且极富人情味的IT培训团队；2010-2011年，妙味深度关注WEB前端开发领域，为此精心研发出一套灵活而充满趣味的JavaScript课程。2011-2013年，妙味精准研发出最新HTML5\CSS3课程，并推出远程培训课程方案，尝试将线下优良的培训模式移植到远程网络培训中，希望尽最大努力，将一种快乐愉悦的授课体验、结合HTML\CSS\JS知识点，精准传递给妙味课堂的每一位学员。</p>
+		<div id="option">
+			<ul id="nav">
+				<li><a href="javascript:;">查找</a></li>
+				<li><a href="javascript:;">替换</a></li>
+			</ul>
+			<div id="control">
+				<ul>
+					<li>
+						<input type="text">
+						<button>查找</button>
+					</li>
+					<li>
+						<input type="text">
+						<input type="text">
+						<button>替换</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="float-nav">
+			<p><a href="javascript:;">展开</a></p>
+			<ul>
+				<li><a href="javascript:;">查找</a></li>
+				<li><a href="javascript:;">替换</a></li>
+			</ul>
+		</div>
+	</div>
+	<script>
+	window.onload = function() {
+		var oFloatNav = $('float-nav');
+		var oOpen = oFloatNav.getElementsByTagName('p')[0];
+		var oUl = oFloatNav.getElementsByTagName('ul')[0];
+		var aLi = oUl.getElementsByTagName('li');
+
+		var oOption = $('option');
+		var oOptionDiv = $('control');
+		var aOptionDivLi = oOptionDiv.getElementsByTagName('li');
+		var oOptionUl = $('nav');
+		var aOptionUlLi = oOptionUl.getElementsByTagName('li');
+
+		var aBtn = oOptionDiv.getElementsByTagName('button');
+
+		var oP = $('outer').getElementsByTagName('p')[0];
+		var str = oP.innerHTML;
+
+		init();
+
+		// 列表展开
+		oOpen.onOff = true;
+		oOpen.onclick = function() {
+			if (this.onOff) {
+				oUl.style.display = 'block';
+				this.onOff = false;
+			}else{
+				oUl.style.display = 'none';
+				this.onOff = true;
+			}
+		}
+
+		for (var i = 0; i < aLi.length; i++) {
+			aLi[i].index = aOptionUlLi[i].index = i;
+			aLi[i].onclick = function(){
+				tab(this.index);
+			}
+			aOptionUlLi[i].onclick = function () {
+				tab(this.index);
+			}
+		}
+
+		// tab切换
+		function tab(idx){
+			init();
+
+			oOption.style.display = 'block';
+			aOptionDivLi[idx].style.display = 'block';
+			aOptionUlLi[idx].className = 'active';
+			oUl.style.display = 'none';
+			oOpen.onOff = true;
+		}
+
+		function init () {
+			oP.innerHTML = str;
+			for (var i = 0; i < aOptionDivLi.length; i++) {
+				aOptionDivLi[i].className = '';
+				aOptionUlLi[i].className = '';
+				aOptionDivLi[i].style.display = 'none';
+			};
+		}
+
+		// 查找
+		aBtn[0].onclick = function(){
+			oP.innerHTML = str;
+			var oLi = oOptionDiv.getElementsByTagName('li')[0];
+			var oInp = oLi.getElementsByTagName('input')[0];
+			var val = oInp.value;
+			if(isEmpty(val)){
+				alert('请输入啥啥啥');
+			}else{
+				var arr = str.split(val);
+
+				var newStr = arr.join('<span style="background-color:orange;">'+val+'</span>');
+				oP.innerHTML = newStr;
+			}
+		}
+
+		// 替换
+		aBtn[1].onclick = function(){
+			oP.innerHTML = str;
+			var oLi = oOptionDiv.getElementsByTagName('li')[1];
+			var aInp = oLi.getElementsByTagName('input');
+			var oldVal = aInp[0].value;
+			if(isEmpty(oldVal)){
+				alert('请输入啥啥啥');
+			}else{
+				var newVal = aInp[1].value;
+				var arr = str.split(oldVal);
+				var newStr = arr.join(newVal);
+				oP.innerHTML = newStr;
+			}
+		}
+
+		function isEmpty (value) {
+			if (!value) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+	</script>
+</body>
+</html>

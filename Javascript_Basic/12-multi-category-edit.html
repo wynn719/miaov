@@ -1,0 +1,91 @@
+<!-- 已完成 --> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>多个分类修改</title>
+  <style> 
+  body{ font-family: Microsoft Yahei; } 
+  #outer{ width: 300px; } 
+  h3{ background-color: orange; padding: 2px 10px; margin: 0; } 
+  .cate-list{ list-style: none; margin: 0; padding: 0; border: 1px solid orange; } 
+  ul li{ position: relative; height: 20px; padding: 2px 10px; line-height: 20px; border-bottom: 1px solid orange; } 
+  li p{ float: left; margin: 0; margin-right: 10px; } 
+  li a{ cursor: pointer; color: orange; } 
+  li a:hover{ text-decoration: underline; } 
+  .save, .cancel{ display: none; } 
+  li input{ float: left; margin-right:10px; } 
+  .edit-input{ display: none; } 
+  </style>
+</head>
+<body>
+  <div id="outer">
+    <h3>分类名称</h3>
+    <ul class="cate-list">
+      <li>
+        <p>生活</p>
+        <input class="edit-input" type="text">
+        <a class="edit">修改</a>
+        <a class="save">保存</a>
+        <a class="cancel">取消</a>
+      </li>
+      <li>
+        <p>时尚</p>
+        <input class="edit-input" type="text">
+        <a class="edit">修改</a>
+        <a class="save">保存</a>
+        <a class="cancel">取消</a>
+      </li>
+      <li>
+        <p>技术</p>
+        <input class="edit-input" type="text">
+        <a class="edit">修改</a>
+        <a class="save">保存</a>
+        <a class="cancel">取消</a>
+      </li>
+      <li>
+        <p>漫画</p>
+        <input class="edit-input" type="text">
+        <a class="edit">修改</a>
+        <a class="save">保存</a>
+        <a class="cancel">取消</a>
+      </li>
+    </ul>
+  </div>
+  <script>
+  window.onload = function() {
+    var oOuter = document.getElementById('outer');
+    var aUl = oOuter.getElementsByTagName('ul')[0];
+    var aLi = aUl.getElementsByTagName('li');
+
+    for (var i = 0; i < aLi.length; i++) {
+      editContent(aLi[i]);
+    };
+  }
+
+  function editContent(aLi){
+    var aP = aLi.getElementsByTagName('p')[0];
+    var aInput = aLi.getElementsByTagName('input')[0];
+    var aA = aLi.getElementsByTagName('a');
+    
+    //修改
+    aA[0].onclick = function() {
+      aInput.value = aP.innerHTML;
+      aP.style.display = this.style.display = 'none';
+      aInput.style.display = aA[1].style.display = aA[2].style.display = 'inline';
+    }
+    //保存
+    aA[1].onclick = function() {
+      aP.innerHTML = aInput.value;
+      aP.style.display = aA[0].style.display = 'inline';
+      aInput.style.display = this.style.display = aA[2].style.display = 'none';
+    }
+    //取消
+    aA[2].onclick = function() {
+      aP.style.display = aA[0].style.display = 'inline';
+      aInput.style.display = this.style.display = aA[1].style.display = 'none';
+    }
+  }
+  </script>
+</body>
+</html>

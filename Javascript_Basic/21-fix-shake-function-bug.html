@@ -1,0 +1,67 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>修复shake的bug</title>
+	<style>
+	div{position: absolute;top:150px;width: 100px;height: 100px;background-color: #000;border: 1px solid #000;margin-bottom: 5px;margin-top: -50px;}
+	</style>
+</head>
+<body>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<script>
+	window.onload = function() {
+		var aDiv = document.getElementsByTagName('div');
+		for (var i = 0; i < aDiv.length; i++) {
+			aDiv[i].style.left = i * 110 + 'px';
+		};
+
+		for (var i = 0; i < aDiv.length; i++) {
+			aDiv[i].onmouseover = function(){
+				var _this = this;
+				shake(_this,'top',2);
+			};
+		};
+	}
+
+	function shake(obj,attr,dir,endFn){
+		var pos = parseInt(getStyle(obj,attr));
+		var arr = [];
+		var num = 0;
+		if(obj.shaked) return;
+		obj.shaked = true;
+		if (obj.shaked) {
+			// 加入抖动变化系数
+			for (var i = 10; i > 0; i-=dir) {
+				arr.push(i,-i);
+			};
+			arr.push(0);
+
+			clearInterval(obj.shakeTimer);
+
+			obj.shakeTimer = setInterval(function(){
+				var cValue = pos + arr[num];
+				obj.style[attr] = cValue + 'px';
+				num++;
+
+				if(num > 10){
+					clearInterval(obj.shakeTimer);
+					endFn && endFn(); 
+					obj.shaked = false;
+				}
+			},30);
+		}
+	}
+
+	function getStyle(obj, attr){
+		return obj.currentStyle ? obj.currentStyle(attr):getComputedStyle(obj)[attr];
+	}
+	</script>
+</body>
+</html>

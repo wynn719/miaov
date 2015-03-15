@@ -1,0 +1,80 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>延时消失的导航栏</title>
+	<style>
+	*{font-size: 14px;}
+	#nav{position: relative;}
+	ul{position: absolute;list-style: none;padding: 0;margin: 0;overflow: hidden;border-radius: 2px;}
+	ul li{float: left;padding: 7px 18px;cursor: pointer;}
+	.main-nav{background-color: #a41f24;border: 1px solid #8e0d12;}
+	.main-nav li{border-right: 1px solid #8e0d12;color:white;}
+	.second-nav{position: absolute;display: none;top: 35px;background-color: #eff1f4;border: 1px solid #c0c0c0;}
+	.second-nav li{color: #4D4D4D;border-right: 1px solid #c0c0c0;}
+	#nav .last-li{border-right: none;}
+	</style>
+</head>
+<body>
+	<div id="nav">
+		<ul class="main-nav">
+			<li>虎扑体育</li>
+			<li>NBA</li>
+			<li>CBA</li>
+			<li>国际足球</li>
+			<li>中国足球</li>
+			<li>赛车</li>
+			<li class="last-li">网球</li>
+		</ul>
+		<ul class="second-nav">
+		</ul>
+	</div>
+	<script>
+	window.onload = function() {
+		var oNav = document.getElementById('nav');
+		var aUl = oNav.getElementsByTagName('ul');
+		var aMainLi = aUl[0].getElementsByTagName('li');
+		var aSeLi = aUl[1].getElementsByTagName('li');
+
+		var timer = null;
+		var data = [[],['首页','新闻','新声','视频','图片','比赛中心','赛程','直播'], ['首页','新闻','新声','赛程','比赛','积分榜','直播','视频','球员'],['首页','英超','西甲','意甲','德甲','欧冠'],[],[],[]];
+
+		function show(){
+			clearInterval(timer);
+			aUl[1].style.display = 'block';
+		}
+
+		function hide(){
+			timer = setTimeout(function (){
+				aUl[1].style.display = 'none';
+			}, 2000);
+		}
+
+		for (var i = 1; i < aMainLi.length-3; i++) {
+			aMainLi[i].index = i;
+			aMainLi[i].onmouseover = function() {
+				//加入数据
+				var liHTML = '';
+				for (var i = 0; i < data[this.index].length; i++) {
+					if (i === data[this.index].length-1) {
+						liHTML += '<li class="last-li">'+data[this.index][i]+'</li>'
+					}else{
+						liHTML += '<li>'+data[this.index][i]+'</li>';
+					}
+				};
+				aUl[1].innerHTML = liHTML;
+
+				show();
+			}
+
+			aMainLi[i].onmouseout = hide;
+		};
+
+		aUl[1].onmouseover = show;
+
+		aUl[1].onmouseout = hide;
+	}
+	</script>
+</body>
+</html>

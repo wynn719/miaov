@@ -1,0 +1,74 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>运动队列-依次落下又返回</title>
+	<style>
+	div{position: absolute;top: 0;left: 0;width: 30px;height: 30px;background-color: orange;border-radius: 50%;}
+	</style>
+</head>
+<body>
+	<div></div>
+	<script>
+	window.onload = function() {
+		var str = '';
+		var timer = null;
+		var num = 0;
+		var on = true;
+
+		for (var i = 0; i < 30; i++) {
+			str += '<div style="left:'+i*35+'px;"></div>';
+		}
+
+		document.body.innerHTML = str;
+		var aDiv = document.getElementsByTagName('div');
+
+		document.onclick = function(){ 
+			clearInterval(timer);
+			timer = setInterval(function(){
+				var _this = aDiv[num];
+				if (on) {
+					doMove(_this,'top',300,10);
+				}else{
+					doMove(_this,'top',0,10);
+				}
+				num++;
+				if(num === 30){
+					clearInterval(timer);
+					num = 0;
+					on = false;
+				}
+			},50);
+		}
+	}
+
+	function doMove(obj,attr,target,dir,callback) {
+
+		dir = parseInt(getStyle(obj,attr)) < target ? dir : -dir;
+
+		clearInterval(obj.timer);
+
+		obj.timer = setInterval(function(){
+			var speed = parseInt(getStyle(obj,attr)) + dir;
+			
+			if (dir > 0 && speed > target || dir < 0 && speed < target) {
+				speed = target;
+			}
+
+			obj.style[attr] = speed + 'px';
+
+			if(speed === target){
+				clearInterval(obj.timer);
+				// 执行回调函数
+				callback && callback();
+			}  
+		},15);
+	}
+
+	function getStyle(obj, attr){
+		return obj.currentStyle ? obj.currentStyle(attr):getComputedStyle(obj)[attr];
+	}
+	</script>
+</body>
+</html>

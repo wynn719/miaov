@@ -1,0 +1,57 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>封装opacity变化函数</title>
+	<style>
+	div{width: 100px;height: 100px;background-color: #000;border: 1px solid #000;opacity: .1;margin-bottom: 5px;}
+	</style>
+</head>
+<body>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<script>
+	window.onload = function() {
+		var aDiv = document.getElementsByTagName('div');
+		for (var i = 0; i < aDiv.length; i++) {
+			aDiv[i].onmouseover = function(){
+				var _this = this;
+				opacity(_this,15,0.01,0.9,function(){
+					opacity(_this,15,0.01,0.1);
+				});
+			};
+		};
+	}
+
+	function opacity(obj,speed,dir,target,endFn){
+		var dir = parseFloat(getStyle(obj,'opacity')) < target ? dir : -dir;
+
+		clearInterval(obj.opacityTimer);
+
+		obj.opacityTimer = setInterval(function(){
+			var cValue = parseFloat(getStyle(obj,'opacity')) + dir;
+
+			if(dir > 0 && cValue > target || dir < 0 && cValue < target){
+				cValue = target;
+			}
+
+			obj.style.opacity = cValue;
+
+			if(cValue === target){
+				clearInterval(obj.opacityTimer);
+				endFn && endFn(); 
+			}
+		},speed);
+	}
+
+	function getStyle(obj, attr){
+		return obj.currentStyle ? obj.currentStyle(attr):getComputedStyle(obj)[attr];
+	}
+	</script>
+</body>
+</html>

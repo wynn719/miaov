@@ -1,0 +1,85 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>全选，反选操作</title>
+	<style>
+	body{ font-family: Microsoft Yahei; } 
+	ul{ list-style: none; border: 1px solid #bbbbbb; width: 300px; margin: 0; padding: 0; border-bottom: none; } 
+	ul li{ border-bottom: 1px solid #bbbbbb; height: 30px; line-height: 30px; background-color: #fff; } 
+	ul li.active{ background-color: #f8f8f8; } 
+	ul li input{ margin: 5px 10px; } 
+	ul li a{ text-decoration: none; } 
+	ul li a:hover{ text-decoration: underline; }
+	</style>
+</head>
+<body>
+	<ul id="songs-list">
+		<li><input type="checkbox"><a href="">多远都要在一起</a></li>
+		<li><input type="checkbox"><a href="">李白</a></li>
+		<li><input type="checkbox"><a href="">匆匆那年</a></li>
+		<li><input type="checkbox"><a href="">模特</a></li>
+		<li><input type="checkbox"><a href="">小苹果</a></li>
+		<li><input type="checkbox"><a href="">当你老了</a></li>
+		<li><input type="checkbox"><a href="">蜀绣</a></li>
+		<li><input type="checkbox"><a href="">Sugar</a></li>
+		<li><input type="checkbox"><a href="">平凡之路</a></li>
+		<li><input type="checkbox"><a href="">飞机场的10:30</a></li>
+		<li><input type="checkbox">全选
+			<a href="javascript:;">反选</a></li>
+	</ul>
+	<script>
+	window.onload = function() {
+		var oSongsList = document.getElementById('songs-list');
+		var aLi = oSongsList.getElementsByTagName('li');
+		var aInput = aLi[aLi.length - 1].getElementsByTagName('input')[0];
+		var aA = aLi[aLi.length - 1].getElementsByTagName('a')[0];
+
+		//单个按钮选择
+		for (var i = 0; i < aLi.length - 1; i++) {
+			aLi[i].onclick = function() {
+				var aInp = this.getElementsByTagName('input')[0];
+				aInp.checked = !aInp.checked;
+				this.className = aInp.checked?'active':'';
+			}
+
+			aLi[i].onmouseover = function() {
+				this.className = 'active';	
+			}
+
+			aLi[i].onmouseout = function() {	
+				var aInp = this.getElementsByTagName('input')[0];
+				aInp.checked?(aInp.checked):(this.className = '');
+			}
+		};
+
+		//全选与取消全选
+		aInput.onclick = function() {
+			if (this.checked) {
+				for (var i = 0; i < aLi.length - 1; i++) {
+					var aInp = aLi[i].getElementsByTagName('input')[0];
+					aInp.checked = true;
+					aLi[i].className = aInp.checked?'active':'';
+				};
+			}else{
+				for (var i = 0; i < aLi.length - 1; i++) {
+					var aInp = aLi[i].getElementsByTagName('input')[0];
+					aInp.checked = false;
+					aLi[i].className = aInp.checked?'active':'';
+				};
+			}
+		}
+
+		//反选
+		aA.onclick = function() {
+			for (var i = 0; i < aLi.length - 1; i++) {
+				var aInp = aLi[i].getElementsByTagName('input')[0];
+				aInp.checked = !aInp.checked;
+				aLi[i].className = aInp.checked?'active':'';
+			};
+		}
+	}
+	</script>
+</body>
+</html>

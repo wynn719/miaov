@@ -1,0 +1,130 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>点击加分效果-可重复点击</title>
+	<style>
+	#good{position: relative;width: 250px;margin-top: 200px;border: 1px solid #000;cursor: pointer;}
+	#good .wrap{width: 0;height: 50px;background-color: orange; opacity: 0;}
+	#good span{position: absolute;left: 0;top: 0;width: 50px;height: 50px;z-index: 1000;line-height: 50px;text-align: center;font-size: 28px;font-weight: bold;}
+	</style>
+</head>
+<body>
+	<div id="good">
+		<div class="wrap"></div>
+		<span>+1</span>
+		<span>+1</span>
+		<span>+1</span>
+		<span>+1</span>
+		<span>+1</span>
+	</div>
+	<script>
+	window.onload = function() {
+		var oGood = document.getElementById('good');
+		var oWrap = oGood.getElementsByTagName('div')[0];
+		var aSpan = oGood.getElementsByTagName('span');
+		var timer = null;
+		var num = 0;
+		var on = true;
+
+		//初始化
+		function init(){
+			for (var i = aSpan.length - 1; i >= 0; i--) {
+				oWrap.style.width = 0;
+				aSpan[i].style.left = 50 * i + 'px';
+				aSpan[i].style.top = 0 + 'px';
+				aSpan[i].style.opacity = 1;
+				num = 0;
+				on = true;
+			};
+		}
+		init();
+
+		oGood.onclick = function() {
+			if (on) {
+				on = false;
+				doMove(oWrap, 'width', 250, 10);
+				opacity(oWrap, 15, 0.03, 1,function(){
+					opacity(oWrap, 15, 0.03, 0,function(){
+						init();
+					});
+				});
+				timer = setInterval(function(){
+					doMove(aSpan[num], 'top', -200, 5);
+					opacity(aSpan[num], 15, 0.03, 0);
+					num++;
+
+					num = num > aSpan.length ? aSpan.length : num;
+					
+					num === aSpan.length && clearInterval(timer);
+				},50);
+			}else{
+
+			}
+		}
+	}
+
+	// 获得计算后样式
+	function getStyle(obj, attr){
+		return obj.currentStyle ? obj.currentStyle(attr):getComputedStyle(obj)[attr];
+	}
+
+	// 移动封装
+	// @param obj: 运动对象
+	// @param attr: 运动对象样式属性
+	// @param target: 运动终点目标
+	// @param dir: 运动幅度
+	// @param callback: 回调函数
+	function doMove(obj,attr,target,dir,endFn) {
+
+		dir = parseInt(getStyle(obj,attr)) < target ? dir : -dir;
+
+		clearInterval(obj.doMoveTimer);
+
+		obj.doMoveTimer = setInterval(function(){
+			var speed = parseInt(getStyle(obj,attr)) + dir;
+			
+			if (dir > 0 && speed > target || dir < 0 && speed < target) {
+				speed = target;
+			}
+
+			obj.style[attr] = speed + 'px';
+
+			if(speed === target){
+				clearInterval(obj.doMoveTimer);
+				// 执行回调函数
+				endFn && endFn();
+			}  
+		},15);
+	}
+
+	// 透明度变化
+	// @param obj: 运动对象
+	// @param speed: 变化速度
+	// @param target: 终点目标
+	// @param dir: 幅度
+	// @param callback: 回调函数
+	function opacity(obj,speed,dir,target,endFn){
+		var dir = parseFloat(getStyle(obj,'opacity')) < target ? dir : -dir;
+
+		clearInterval(obj.opacityTimer);
+
+		obj.opacityTimer = setInterval(function(){
+			var cValue = parseFloat(getStyle(obj,'opacity')) + dir;
+
+			if(dir > 0 && cValue > target || dir < 0 && cValue < target){
+				cValue = target;
+			}
+
+			obj.style.opacity = cValue;
+
+			if(cValue === target){
+				clearInterval(obj.opacityTimer);
+				endFn && endFn(); 
+			}
+		},speed);
+	}
+	</script>
+</body>
+</html>

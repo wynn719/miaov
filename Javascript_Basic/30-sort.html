@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片排序</title>
+	<style>
+	#outer{background-color: #dddddd;padding: 10px;width: 600px;margin: 0 auto;}
+	.button-group{width: 100%;text-align: center;margin: 10px auto;}
+	button{width: 100px;height: 30px;background-color: orange;color: white;line-height: 30px;border: none;cursor: pointer;}
+	.gallery{}
+	ul, li{list-style: none;margin: 5px 0;padding: 0;}
+	li{display: inline-block;*display: inline;*zoom: 1;width: 132px;height: 100px;border: 1px solid #000;padding: 5px;background-color: #fff;}
+	li img{width: 100%;height: 80px;}
+	li p{margin: 0;padding: 0;background-color: #333333;color: white;text-align: center;}
+	</style>
+</head>
+<body>
+	<div id="outer">
+		<div class="button-group">
+			<button>从小到大</button>
+			<button>打乱顺序</button>
+		</div>
+		<div class="gallery">
+			<ul>
+				<li>
+					<img src="" alt="">
+					<p>温馨办公</p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p>温馨办公</p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p>温馨办公</p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p>温馨办公</p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p>温馨办公</p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p>温馨办公</p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p>温馨办公</p>
+				</li>
+				<li>
+					<img src="" alt="">
+					<p>温馨办公</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script>
+	window.onload = function() {
+		var aBtn = document.getElementsByTagName('button'),
+			oUl = document.getElementsByTagName('ul')[0];
+			aLi = oUl.getElementsByTagName('li'),
+			aImgData = ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg','08.jpg'],
+			aImgInfo = ['01图片','02图片','03图片','04图片','05图片','06图片','07图片','08图片'];
+
+			function init () {
+				for (var i = 0; i < aLi.length; i++) {
+					var oImg = aLi[i].getElementsByTagName('img')[0];
+					var oP = aLi[i].getElementsByTagName('p')[0];
+					oImg.src = 'images/'+aImgData[i];
+					oP.innerHTML = aImgInfo[i];
+				};
+			}
+			init();
+
+			aBtn[0].onclick = function () {
+				var str = '';
+				aLi.sort(function() {
+					return parseInt(a) - parseInt(b);
+				})
+				for (var i = 0; i < aLi.length; i++) {
+					str += aLi[i].innerHTML;
+				};
+				oUl.innerHTML = str;
+			}
+
+	}
+	</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自动轮播</title>
+	<style>
+	.slider{position:absolute; width: 640px;height: 360px;overflow:hidden;box-shadow: 4px 4px 7px 1px #888888}
+	.slider ul{position: absolute;left:0;list-style: none;margin: 0;padding: 0;}
+	.slider ul li{float:left;}
+	.slider ul li a{position: relative;display: block;}
+	.slider ul li p{position: absolute;width: 640px;height: 40px;bottom: -36px;text-align: center;background-color: #000;color: #fff;opacity: .8;margin: 0;line-height: 40px;}
+	.slider ul li img{width: 640px;height: 360px;}
+	</style>
+</head>
+<body>
+	<div class="slider">
+		<ul class="slider-content">
+			<li>
+				<a href="javascript:;">
+					<img src="" alt="">
+					<p class="title"></p>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;">
+					<img src="" alt="">
+					<p class="title"></p>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;">
+					<img src="" alt="">
+					<p class="title"></p>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;">
+					<img src="" alt="">
+					<p class="title"></p>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<script>
+	window.onload = function(){
+		var oDiv = document.getElementsByTagName('div')[0];
+		var aUl = oDiv.getElementsByTagName('ul')[0];
+		var aLi = aUl.getElementsByTagName('li');
+
+		var imgArray = ['images/p1.jpg', 'images/p2.jpg', 'images/p3.jpg', 'images/p4.jpg'];
+		var imgInfo = ['不知道是啥', '老男孩mv', '帅爆了的车', '明明就MV'];
+
+		var num = 0;// 索引
+
+		// 初始化数据
+		for (var i = 0; i < aLi.length; i++) {
+			var aImg = aLi[i].getElementsByTagName('img')[0];
+			var aP = aLi[i].getElementsByTagName('p')[0];
+			aImg.src = imgArray[i];
+			aP.innerHTML = imgInfo[i];
+		};
+		aUl.style.width = i * parseInt(getStyle(aLi[0],'width')) + 'px';// 图片廊的总宽度
+
+		/* 之前错误的做法
+		 * setInterval 在做永久循环时容易出现bug
+
+		setInterval(fnTab,000);
+		function fnTab(){
+			if(num1 == aLi.length - 1){
+				num1 = 0;
+				aLi[0].style.position = 'relative';
+				aLi[0].style.left = 640 * aLi.length + 'px';
+			}else{
+				num1++;
+			}
+
+			num2++;
+
+			var target = -640 * num2;
+
+			doMove(aUl, 'left', target, 10, function(){
+				if (num1 == 0) {
+					aLi[0].style.position = 'static';
+					aUl.style.left = 0;
+					num2 = 0;
+				}
+			});
+		}*/
+
+		function fnTab(){
+			setTimeout(function() {
+				var aP = aLi[num].getElementsByTagName('p')[0];// 底部文字
+
+				num++;
+				
+				var liWidth = parseInt(getStyle(aLi[0],'width'));// 单个块的宽度
+
+				var target = -liWidth * num;// 运动目的地
+
+				// 底部文字出现
+				doMove(aP, 'bottom', 4, 4, function(){
+					setTimeout(function(){
+						// 底部文字隐藏
+						doMove(aP, 'bottom', -36, 2, function(){
+							// 切换
+							doMove(aUl, 'left', target, 10,function(){
+								if (num === aLi.length - 1) {
+									// 将第一张图片移到最后一张图片后面
+									aLi[0].style.position = 'relative';
+									aLi[0].style.left = liWidth * aLi.length + 'px';
+								}
+
+								if (num === aLi.length) {
+									// 回到初始状态
+									aLi[0].style.position = 'static';
+									aLi[0].style.left = 0;
+									aUl.style.left = 0;
+									num = 0;
+								}
+								fnTab();
+							});
+						});
+					}, 1500);
+				});
+			},1000)
+		}
+
+		fnTab();
+	}
+
+	// 获得计算后样式
+	function getStyle(obj, attr){
+		return obj.currentStyle ? obj.currentStyle(attr):getComputedStyle(obj)[attr];
+	}
+
+	// 运动框架
+	function doMove(obj,attr,target,dir,endFn) {
+		dir = parseInt(getStyle(obj,attr)) < target ? dir : -dir;
+
+		clearInterval(obj.doMoveTimer);
+
+		obj.doMoveTimer = setInterval(function(){
+			var cValue = parseInt(getStyle(obj,attr)) + dir;
+			
+			if (cValue > target && dir > 0 || cValue < target && dir < 0 ) {
+				cValue = target;
+			}
+
+			obj.style[attr] = cValue + 'px';
+
+			if(cValue == target){
+				clearInterval(obj.doMoveTimer);
+				// 执行回调函数
+				endFn && endFn();
+			}  
+		},15);
+	}
+	</script>
+</body>
+</html>
