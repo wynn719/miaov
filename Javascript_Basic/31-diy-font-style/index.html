@@ -1,0 +1,55 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自定义字体</title>
+	<style>
+	#outer{width: 500px;background-color: #ddd;padding: 10px;margin: 0 auto;}
+	#outer #content,textarea{width: 486px;height: 100px;padding: 5px;border: 2px solid #000;background-color: white;font-size: 14px;}
+	#content div{display: inline-block;*display: inline;*zoom: 1;}
+	textarea{resize: none;}
+	</style>
+</head>
+<body>
+	<div id="outer">
+		<div id="content"></div>
+		<select name="font-sel" id="font-sel">
+			<option value="1">杀人字体</option>
+			<option value="2">衰人字体</option>
+			<option value="3">默认字体</option>
+		</select>
+		<textarea name="textarea" id="textarea"></textarea>
+		<button>发送</button>
+	</div>
+	<script>
+	window.onload = function () {
+		var aImgData = ['knife.gif','shuai.gif'],
+			oBtn = document.getElementsByTagName('button')[0],
+			oCon = document.getElementById('content'),
+			oText = document.getElementById('textarea'),
+			oSel = document.getElementsByTagName('select')[0];
+
+		oBtn.onclick = function(){
+			var selVal = parseInt(oSel.value);
+			sendDiyMsg(selVal);
+		}
+
+		function sendDiyMsg (selVal) {
+			var oldStr = oText.value;
+			var arr = oldStr.split('');
+			var newStr = '';
+			var num = 0;
+			for (var i = 0; i < arr.length; i++) {
+				if(selVal !== 3){
+					newStr += '<div><img src="images/'+aImgData[selVal-1]+'" alt="">'+arr[i]+'</div>';
+				}
+			};
+			if (selVal === 3) {oCon.innerHTML = oldStr;}
+			else{oCon.innerHTML = newStr;}
+			oText.value = '';
+		}
+	}
+	</script>
+</body>
+</html>
