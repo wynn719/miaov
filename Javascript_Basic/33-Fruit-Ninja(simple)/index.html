@@ -1,0 +1,109 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>（缩水版）水果忍者</title>
+	<script src="../Simlib.js"></script>
+	<style>
+	body{background-color: #ddd;}
+	#outer{position: relative;width: 480px;margin: 0 auto;text-align: center;}
+	#view{position: relative;top: 0;left: 0;width: 480px;height: 360px;border: 1px solid #000;background-color: #fff;overflow: hidden;}
+	#score{position: absolute;top:0;left: -101px;width: 100px;border: 1px solid #000;background-color: #fff;}
+	button{margin-top: 20px;}
+	p{text-align: center;}
+	img{position: absolute;width: 50px;height: 50px;bottom: -50px;opacity: 1;left: 40px;}
+	</style>
+</head>
+<body>
+	<p>鼠标滑动切水果</p>
+	<div id="outer">
+		<div id="view">
+			<img id="i" src="images/f1.png" alt="">
+		</div>
+		<div id="score">
+			<p>得分:<span id="get-score">0</span></p>
+			<p>失分:<span id="lose-score">0</span></p>
+		</div>
+		<button id="start">开始游戏</button>
+	</div>
+	<script>
+	window.onload = function() {
+		// 获得元素
+		var oView = $('view'),
+			oGet = $('get-score'),
+			oLose = $('lose-score'),
+			oButton = $('start'),
+			oImg = $('i');
+
+		// 获得所有数据
+		var imgData = ['f1.png','f2.png','f3.png','f4.png'],
+			viewWidth = parseInt(getStyle(oView,'width')),
+			viewHeight = parseInt(getStyle(oView,'height'));
+
+		// 自定义数据
+		var randomLeft = 0;// 随机x轴位置
+		var randomBottom = 0;// 随机运动高度
+		var speed = 1;// 运动速度
+		var speedAdd = true;// 是否加速 
+
+		//初始化
+		function init(){
+			randomLeft = 0;
+			randomBottom = 0;
+			speed = 1;
+			oImg.style.bottom = -100 + 'px';
+			oImg.style.opacity = 1;
+			oGet.innerHTML = 0;
+			oLose.innerHTML = 0;
+			oButton.on = false;
+		}
+
+		// 走你！
+		function d () {
+			// 设置x轴位置
+			randomLeft = Math.floor(Math.random()*(viewWidth-50));
+			randomBottom = Math.round(Math.random()*(viewHeight-160) + 130);
+			oImg.style.left = randomLeft + 'px';
+
+			doMove(oImg, 'bottom', randomBottom, speed, function(){
+				doMove(oImg, 'bottom', -80, speed+1, function(){
+					shake(oView, 'top', 2, function(){
+						oLose.innerHTML = parseInt(oLose.innerHTML) + 1;
+						if (parseInt(oLose.innerHTML) === 5) {
+							alert('你得到了'+oGet.innerHTML+'分');
+							init();
+							return;
+						}
+						d();
+					});
+				});
+			});
+		}
+
+		oImg.onmouseover = function() {
+			opacity(this, 15, 0.1, 0, function(){
+				oGet.innerHTML = parseInt(oGet.innerHTML) + 1;
+				oImg.style.bottom = -100 + 'px';
+				oImg.style.opacity = 1;
+				oImg.src = 'images/'+imgData[Math.floor(Math.random()*4)];
+				speed = speedAdd ? (speed+1):speed;
+				speedAdd = !speedAdd;
+				d();
+			});
+		}
+
+		init();
+		oButton.onclick = function(){
+			if (oButton.on) {
+				alert('游戏中');
+			}else{
+				init();
+				oButton.on = true;
+				d();
+			}
+		}
+	}
+	</script>
+</body>
+</html>
