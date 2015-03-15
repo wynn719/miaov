@@ -1,0 +1,197 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片时钟高级版</title>
+	<style>
+	img{width: 61px;height: 86px;display: block; }
+	ul,li{list-style: none;margin: 0;padding: 0;}
+	#digital-clock ul{width: 488px;margin: 0 auto;overflow: hidden;}
+	#digital-clock li{position: relative;float: left;width: 61px;height: 86px;overflow: hidden;}
+	#digital-clock .single{position: absolute;top: 0;left: 0;}
+	</style>
+	<script src="../Simlib.js"></script>
+</head>
+<body>
+	<p id="time"></p>
+	<div id="digital-clock">
+		<ul>
+			<li>
+				<div class="single">
+					<img src="" alt="">
+					<img src="" alt="">
+				</div>
+			</li>
+			<li>
+				<div class="single">
+					<img src="" alt="">
+					<img src="" alt="">
+				</div>
+			</li>
+			<li>
+				<div class="single">
+					<img src="" alt="">
+					<img src="" alt="">
+				</div>
+			</li>
+			<li>
+				<div class="single">
+					<img src="" alt="">
+					<img src="" alt="">
+				</div>
+			</li>
+			<li>
+				<div class="single">
+					<img src="" alt="">
+					<img src="" alt="">
+				</div>
+			</li>
+			<li>
+				<div class="single">
+					<img src="" alt="">
+					<img src="" alt="">
+				</div>
+			</li>
+			<li>
+				<div class="single">
+					<img src="" alt="">
+					<img src="" alt="">
+				</div>
+			</li>
+			<li>
+				<div class="single">
+					<img src="" alt="">
+					<img src="" alt="">
+				</div>
+			</li>
+		</ul>
+	</div>
+	<script>
+	window.onload = function(){
+		var oP = $('time');
+
+		var oClock = $('digital-clock');
+		var aUl = oClock.getElementsByTagName('ul')[0];
+		var aLi = aUl.getElementsByTagName('li');
+
+		// 初始化
+		function init(){
+			var nowTime = new Date();
+
+			var iHour = nowTime.getHours();
+			var iMinute = nowTime.getMinutes();
+			var iSecond = nowTime.getSeconds();
+
+			var str = toTwo(iHour)+':'+toTwo(iMinute)+':'+toTwo(iSecond);
+
+			for (var i = 0; i < aLi.length; i++) {
+				var aDiv = aLi[i].getElementsByTagName('div')[0];
+				var	aImg = aDiv.getElementsByTagName('img');
+
+				if (i === 2 || i === 5) {
+					aImg[0].src = 'images/colon.jpg';
+					aImg[1].src = 'images/none.jpg';
+				}else{
+					aImg[0].src = 'images/' + str.charAt(i) + '.jpg';
+				}
+			}
+		}
+		init();
+
+		setInterval(function(){
+			run();
+		}, 1000);
+
+		/* 一开始的推导过程
+		setTimeout(function(){
+			num++; // 1
+
+			var target = -86 * num; //-86
+
+			doMove(aDiv, 'top', target, 10, function(){
+				aImg[0].style.position = 'relative';
+				aImg[0].style.top = '172px';
+
+				setTimeout(function(){
+					num++; // 2
+
+					var target = -86 * num; // -172
+
+					doMove(aDiv, 'top', target, 10, function(){
+						// 回到初始状态
+						aImg[0].style.position = 'static';
+						aImg[0].style.top = 0;
+						aDiv.style.top = 0;
+						num = 0;
+
+						setTimeout(function(){
+							num++; // 1
+
+							var target = -86 * num; // -86
+
+							doMove(aDiv, 'top', target, 10, function(){
+								// 回到初始状态
+								aImg[0].style.position = 'relative';
+								aImg[0].style.top = '172px';
+
+							});
+						}, 1000);
+					});
+				}, 1000);
+			});
+		}, 1000);*/
+
+		// 动画切换
+		function timeRun (obj, str, idex) {
+			var aDiv = obj.getElementsByTagName('div')[0];
+			var	aImg = aDiv.getElementsByTagName('img');
+
+			setTimeout(function(){
+				var target = -parseInt(getStyle(aImg[0],'width'));
+
+				if(str.charAt(idex) === ':'){
+					aImg[0].src = 'images/none.jpg';
+					setTimeout(function(){
+						aImg[0].src = 'images/colon.jpg';
+					}, 500);
+				}else{
+					aImg[1].src = 'images/' + str.charAt(idex) + '.jpg';
+					if (aImg[0].src !== aImg[1].src) {
+						doMove(aDiv, 'top', target, 10, function(){
+							aImg[0].src = aImg[1].src;
+							aDiv.style.top = 0 + 'px';
+						});
+					}
+				}
+			});
+		}
+
+        // 时间运行
+		function run() {
+			var nowTime = new Date();
+
+			var iHour = nowTime.getHours();
+			var iMinute = nowTime.getMinutes();
+			var iSecond = nowTime.getSeconds();
+
+			var str = toTwo(iHour)+':'+toTwo(iMinute)+':'+toTwo(iSecond);
+
+			for (var i = 0; i < aLi.length; i++) {
+				aLi[i].num = 0;
+				if (i === 2 || i === 5) {
+					timeRun(aLi[i], str, i);
+				}else{
+					timeRun(aLi[i], str, i);
+				}
+			}
+		}
+	}
+
+	// 个位数的转换
+	function toTwo(n){
+		return n < 10 ? '0'+ n : '' + n;
+	}
+	</script>
+</body>
+</html>

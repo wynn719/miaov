@@ -1,0 +1,64 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片时钟基础版</title>
+	<style>
+	#digital-clock{margin: auto;text-align: center;}
+	#digital-clock img{width: 61px;height: 86px; }
+	</style>
+	<script src="../Simlib.js"></script>
+</head>
+<body>
+	<p id="time"></p>
+	<div id="digital-clock">
+		<img src="" alt="">
+		<img src="" alt="">
+		<img src="" alt="">
+		<img src="" alt="">
+		<img src="" alt="">
+		<img src="" alt="">
+		<img src="" alt="">
+		<img src="" alt="">
+	</div>
+	<script>
+	window.onload = function(){
+		var oP = $('time');
+		var aImg = document.getElementsByTagName('img');
+
+		function run() {
+			var nowTime = new Date();
+
+			var iYear = nowTime.getFullYear();
+			var iMonth = nowTime.getMonth() + 1;//month是从0开始计数
+			var iDate = nowTime.getDate();// 日
+			var iDay = nowTime.getDay();// 星期
+			var iHour = nowTime.getHours();
+			var iMinute = nowTime.getMinutes();
+			var iSecond = nowTime.getSeconds();
+
+			var str = toTwo(iHour)+toTwo(iMinute)+toTwo(iSecond);
+
+			oP.innerHTML = nowTime;
+
+			for (var i = 0, n = 0; i < aImg.length, n < 6; i++) {
+				if (i === 2 || i === 5) {
+					aImg[i].src = 'images/colon.jpg';
+				}else{
+					aImg[i].src = 'images/'+str.charAt(n)+'.jpg';
+					n++;
+				}
+			};
+		}
+
+		run();
+		setInterval(run,1000);
+	}
+
+	function toTwo(n){
+		return n < 10 ? '0'+ n : '' + n;
+	}
+	</script>
+</body>
+</html>
