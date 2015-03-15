@@ -1,0 +1,119 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>搜狐视频记录片列表展示</title>
+  <style> 
+  body{ font-family: Microsoft Yahei; } 
+  #tab-box{ width: 400px; } 
+  ul{ margin: 0; padding: 0; } 
+  .nav{ color: white; background: white; margin: 0; border: 1px solid #BBBBBB; border-bottom: none; } 
+  .nav li{ display: inline-block; *display: inline; *zoom: 1; background-color: white; color: gray; text-decoration: none; padding: 5px 10px; cursor: pointer; } 
+  .nav li.active{ background-color: #bd1902; color: white; } 
+  .tab{ display: none; border: 1px solid #BBBBBB; } 
+  .news-list li{ overflow: hidden; padding: 5px 5px; border-bottom: 1px solid #BBBBBB; } 
+  .news-list li img{ float: left; display: none; width: 100px; height: 60px; margin-right: 10px; } 
+  .news-list li a{ text-decoration: none; } 
+  .news-list li a:hover{ text-decoration: underline; } 
+  </style>
+</head>
+<body>
+  <div id="tab-box">
+    <ul class="nav">
+      <li class="active">火箭</li>
+      <li>湖人</li>
+      <li>骑士</li>
+    </ul>
+    <ul class="news">
+      <div class="tab">
+        <ul class="news-list">
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+        </ul>
+      </div>
+      <div class="tab">
+        <ul class="news-list">
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+        </ul>
+      </div>
+      <div class="tab">
+        <ul class="news-list">
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+          <li><img src="" alt=""><a href=""></a></li>
+        </ul>
+      </div>
+    </ul>
+  </div>
+  <script>
+  window.onload = function() {
+    var oOuter = document.getElementById('tab-box');
+    var aUl1 = oOuter.getElementsByTagName('ul');
+    var aNavLi = aUl1[0].getElementsByTagName('li');//导航
+    var aTabDiv = aUl1[1].getElementsByTagName('div');//选项卡
+
+    // 数据初始化
+    var aImgData = [['cal (1).jpg', 'cal (2).jpg', 'cal (3).jpg', 'cal (4).jpg', 'cal (5).jpg', 'cal (6).jpg', 'cal (7).jpg'], ['laker (1).jpg', 'laker (2).jpg', 'laker (3).jpg', 'laker (4).jpg'], ['rocket (1).jpg', 'rocket (2).jpg', 'rocket (3).jpg', 'rocket (4).jpg', 'rocket (5).jpg']];
+    var aIntroData = [['黝黑蜗壳', '麦迪打铁啦', '詹屎火车撞', '黝黑蜗壳', '麦迪打铁啦', '詹屎火车撞', '黝黑蜗壳'], ['麦迪打铁啦', '詹屎火车撞', '黝黑蜗壳', '麦迪打铁啦'], ['詹屎火车撞', '黝黑蜗壳', '麦迪打铁啦', '詹屎火车撞', '黝黑蜗壳']];
+
+    // 初始化
+    aTabDiv[0].style.display = 'block';
+    aNavLi[0].className = 'active';
+    
+    for (var i = 0; i < aNavLi.length; i++) {
+      aNavLi[i].index = i;
+      aNavLi[i].onclick = function() {
+        //隐藏其他模块
+        for (var i = 0; i < aNavLi.length; i++) {
+          aNavLi[i].className = '';
+          aTabDiv[i].style.display = 'none';
+        }
+
+        //激活当前模块
+        this.className = 'active';
+        aTabDiv[this.index].style.display = 'block';
+      }
+
+      liHover(aTabDiv[i], aImgData[i], aIntroData[i]);
+    }
+
+    function liHover(aTabDiv,aImgData,aIntroData) {
+      var aNewListLi = aTabDiv.getElementsByTagName('li');
+
+      // 添加数据
+      for (var i = 0; i < aNewListLi.length; i++) {
+        var aImg = aNewListLi[i].getElementsByTagName('img')[0];
+        var aA = aNewListLi[i].getElementsByTagName('a')[0];
+        aImg.src = 'imgs/'+aImgData[i];
+        aA.innerHTML = aIntroData[i];
+
+      };
+
+      // 绑定事件
+      for (var i = 0; i < aNewListLi.length; i++) {
+        aNewListLi[i].onmouseover = function() {
+          var aImg = this.getElementsByTagName('img')[0];
+          aImg.style.display = 'block';
+        }
+
+        aNewListLi[i].onmouseout = function() {
+          var aImg = this.getElementsByTagName('img')[0];
+          aImg.style.display = 'none';
+        }
+      };
+    }
+  }
+  </script>
+</body>
+</html>
