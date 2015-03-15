@@ -1,0 +1,91 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自动轮换选项卡</title>
+	<script src="../Simlib.js"></script>
+	<style>
+	#outer{width:222px;border: 1px solid #dddddd;padding: 10px;}
+	ul{list-style: none;margin: 0;padding: 0;}
+	a{text-decoration: none;}
+	.nav ul, .sec-nav ul{overflow: hidden;}
+	.nav li{float: left;margin-right: 1px;margin-bottom: 1px;}
+	.nav li a{background-color: orange;color: #fff;display: inline-block;padding: 3px 6px;}
+	.nav li.active a{background-color: green;}
+	.sec-nav{overflow: hidden;}
+	.sec-nav img{float:left;width: 120px;height: 90px;}
+	.sec-nav ul{float: left;}
+	.sec-nav li a{display: block;width: 100px;height: 28px;line-height: 28px;background-color: #dddddd;color: white;border: 1px solid white;text-indent: 1em;}
+	.sec-nav li.active a{background-color: #aaaaaa;}
+	</style>
+</head>
+<body>
+	<div id="outer">
+		<div class="nav">
+			<ul>
+				<li><a href="javascript:;">菜单一</a></li>
+				<li><a href="javascript:;">菜单二</a></li>
+			</ul>
+		</div>
+		<div class="sec-nav">
+			<img src="" alt="">
+			<ul>
+				<li><a href="javascript:;">图片1</a></li>
+				<li><a href="javascript:;">图片2</a></li>
+				<li><a href="javascript:;">图片3</a></li>
+			</ul>
+		</div>
+	</div>
+	<script>
+	$(function() {
+		var oOuter = $('outer');
+		var aDiv = oOuter.getElementsByTagName('div');
+		var aNavLi = aDiv[0].getElementsByTagName('li');
+		var aSecNav = aDiv[1].getElementsByTagName('li');
+		var oImg = aDiv[1].getElementsByTagName('img')[0];
+
+		//数据
+		var imgData = ['pic1.jpg','pic2.jpg','pic3.jpg','pic4.jpg','pic5.jpg','pic6.jpg'];
+		var imgInf = ['图片1','图片2','图片3','图片4','图片5','图片6'];
+
+		//切换长度值
+		var navLen = aNavLi.length,// 2
+			secNavLen = aSecNav.length;// 3
+
+		var timer = null;
+		var num1 = 0; // 记录图片索引
+		var num2 = 0; // 记录菜单索引
+
+		//初始化
+		function init(){
+			oImg.src = 'images/'+imgData[num1+(num2*secNavLen)];
+			aNavLi[num2].className = 'active';
+			aSecNav[num1].className = 'active';
+		}
+		init();
+
+		timer = setInterval(function(){
+			//清理样式
+			for (var i = 0; i < navLen; i++) {
+				aNavLi[i].className = '';
+			};
+
+			for (var i = 0; i < secNavLen; i++) {
+				aSecNav[i].className = '';
+			};
+
+			if (num1 === secNavLen-1) {
+				num2++;
+				num2 %= navLen;
+			}
+
+			num1++;
+			num1 %= (secNavLen);
+
+			init();
+		},1500);
+	});
+	</script>
+</body>
+</html>
