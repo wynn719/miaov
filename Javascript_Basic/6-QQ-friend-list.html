@@ -1,0 +1,108 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模拟QQ朋友列表</title>
+  <style> 
+  *{ font-size: 14px; } 
+  #qq-list{ text-aH2gn: center; margin: 0 auto; list-style: none; padding: 0; } 
+  ul ul{ list-style: none; padding: 0; } 
+  ul h2{ margin: 0; padding: 0; } 
+  ul li{ width: 150px; background-color: #f8f8f8; border: 1px solid #000; text-aH2gn: left; cursor: pointer; } 
+  ul li ul li{ margin-left: -1px; } 
+  .hehe{ background-color: yellow; } 
+  .hehe ul{ display: none; } 
+  .list-active{ background-color: red; } 
+  .btn-active{ background-color: blue; } 
+</style>
+</head>
+<body>
+  <ul id="qq-list">
+    <li class="hehe">
+      <h2>我的好友</h2>
+      <ul>
+        <li>小明</li>
+        <li>小明</li>
+        <li>小明</li>
+        <li>小明</li>
+      </ul>
+    </li>
+    <li class="hehe">
+      <h2>高中</h2>
+      <ul>
+        <li>李雷</li>
+        <li>李雷</li>
+        <li>李雷</li>
+      </ul>
+    </li>
+    <li class="hehe">
+      <h2>大学</h2>
+      <ul>
+        <li>华生</li>
+        <li>华生</li>
+        <li>华生</li>
+      </ul>
+    </li>
+  </ul>
+  <script>
+  window.onload = function() {
+    var oQQlist = document.getElementById('qq-list');
+    var aH2 = document.getElementsByTagName('h2');
+    var aUl = oQQlist.getElementsByTagName('ul');
+    var aLi = null;
+    var arrLi = [];//存储所有li
+    var lastClick = null;
+
+    for (var i = 0; i < aH2.length; i++) {
+      aH2[i].index = i;
+      aH2[i].onOff = false;
+      aH2[i].onclick = function() {
+        if (this.onOff) {
+          aUl[this.index].style.display = 'none';
+          this.className = '';
+          this.onOff = false;
+        } else{
+          aUl[this.index].style.display = 'block';
+          this.className = 'list-active';
+          this.onOff = true;
+        }
+      }
+    };
+
+    //找元素
+    for (var i = 0; i < aUl.length; i++) {
+      aLi = aUl[i].getElementsByTagName('li');
+      for (var j = 0; j < aLi.length; j++) {
+        arrLi.push(aLi[j]);
+      };
+    }; 
+
+    //绑定事件
+    for (var i = 0; i < arrLi.length; i++) {
+      arrLi[i].index = i;
+      arrLi[i].onOff = false;
+      arrLi[i].onclick = function() {
+        //消除样式
+        if (lastClick !== null) {
+          lastClick.className = '';
+        }
+
+        //添加样式
+        if (lastClick !== this) {
+          if (this.onOff) {
+            this.className = '';
+          } else{
+            this.className = 'btn-active';
+          }
+        }else{
+          this.className = '';
+        }
+
+        lastClick = this;
+      }
+    };
+  }
+  </script>
+</body>
+</html>

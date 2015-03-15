@@ -1,0 +1,55 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div>1、找到arr里所有的数字：-98765, 34, -2, 0, 5<br>
+    2、找到可以转成数字的：'100px', -98765, 34, -2, 0, '300', '23.45元',  5 <br>
+    3、把转成数字以后，最大值判断出来：300 <br>
+    4、把 NaN 所在的位置找出来：1 14 17  19 <br></div>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <script>
+
+  window.onload = function() {
+    var aP = document.getElementsByTagName('p');
+    var temp = ['所有的数字：', '可以转成数字的：', '转型后的最大值：', 'NaN所在位置：'];
+    var arr = [ '100px', 'abc'-6, [], -98765, 34, -2, 0, '300', , function(){alert(1);}, null, document, [], true, '200px'-30,'23.45元', 5, Number('abc'), function(){ alert(3); }, 'xyz'-90 ];
+    var max = 0;
+    
+    for (var i = 0; i < arr.length; i++) {
+      //判断是否为数字
+      if ((typeof arr[i]) === 'number') {
+        if(!isNaN(arr[i])){
+          temp[0] += (arr[i] + ' ');
+        }
+      }
+
+      //可以转成数字的
+      if(parseInt(arr[i]) || parseFloat(arr[i]) === 0){
+        max = (max<Number(arr[i]))?Number(arr[i]):max;
+        temp[1] += (arr[i] + ' ');
+      }
+
+      //把 NaN 所在的位置找出来
+      if(typeof arr[i] === 'number' && isNaN(arr[i])){
+        temp[3] += (i + ' ');
+      }
+    }
+
+    //转型后的最大值
+    temp[2] += max;
+
+    aP[0].innerHTML = temp[0];
+    aP[1].innerHTML = temp[1];
+    aP[2].innerHTML = temp[2];
+    aP[3].innerHTML = temp[3];
+  }
+  </script>
+</body>
+</html>

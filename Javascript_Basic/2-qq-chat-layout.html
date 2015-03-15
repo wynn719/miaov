@@ -1,0 +1,65 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style> 
+	#layout{ position: absolute; left: 50%; top: 50%; width: 270px; height: 480px; border: 1px solid #000; border-radius: 5px; margin-top: -240px; margin-left: -135px; } 
+	#display{ height: 419px; padding: 10px; background-color: #FAFAFA; overflow: auto; }
+	#control-bar{ position: absolute; width: 270px; height: 40px; bottom: 0; border-top: 1px solid #000; } 
+	.avatar, .she-avatar, .he-avatar{ float: left; width: 30px; height: 30px; margin: 5px; } 
+	#text-bar{ float: left; width: 170px; height: 24px; margin-top: 5px; margin-bottom: 5px; } 
+	#send{ float: left; width: 46px; height: 30px; margin: 5px; } 
+	.he{ float: left; } 
+	.she{ float: left; } 
+	.he, .she{ width: 250px; } 
+	.he-text, .she-text{ word-break: break-all; max-width: 150px; line-height: 30px; margin: 5px; font-size: 12px; padding-left: 5px; padding-right: 5px; border-radius: 10px; } 
+	.he-text{ float: left; background-color: rgb(0, 226, 255); } 
+	.she-text{ float: right; background-color: rgb(255, 252, 0); } 
+	.she-avatar{ float: right; } 
+	</style>
+</head>
+<body>
+	<div id="layout">
+		<div id="display">
+		</div>
+		<div id="control-bar">
+			<img src="images/2.jpg" alt="" class="avatar" id="send-ava">
+			<input type="text" id="text-bar">
+			<button id="send">发送</button>
+		</div>
+	</div>
+	<script>
+	window.onload = function() {
+		var sendAva = document.getElementById('send-ava'),
+			textBar = document.getElementById('text-bar'),
+			sendBtn = document.getElementById('send'),
+			displayDiv = document.getElementById('display');
+
+		var imgArray = ['images/1.jpg', 'images/2.jpg'],
+			avaStatus = true;
+
+
+		sendAva.onclick = function() {
+			if (avaStatus) {
+				sendAva.src = imgArray[0];
+				avaStatus = false;
+			}else{
+				sendAva.src = imgArray[1];
+				avaStatus = true;
+			}
+		}
+
+		sendBtn.onclick = function() {
+			var currentImg = avaStatus?imgArray[1]:imgArray[0];
+			var currentAva = avaStatus?'she':'he';
+			var text = textBar.value;
+			var currentMsg = '<div class="'+currentAva+'"><img src="'+currentImg+'" alt="" class="'+currentAva+'-avatar"><p class="'+currentAva+'-text">'+text+'</p></div>'
+			display.innerHTML = currentMsg + display.innerHTML; 
+			textBar.value = '';
+		}
+	};
+	</script>
+</body>
+</html>

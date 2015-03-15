@@ -1,0 +1,29 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QQ号码过滤器</title>
+</head>
+<body>
+  <label for="account">请输入QQ号码</label><input type="text" id="account">
+  <p id="tips"></p>
+  <script>
+  window.onload = function() {
+    var oAccount = document.getElementById('account');
+    var oP = document.getElementById('tips');
+
+    oAccount.onblur = function() {
+      //空值判断
+      var qq = oAccount.value;
+      var reg = /[1-9][0-9]{4,10}/;
+      if(reg.test(qq)){
+        oP.innerHTML = '输入正确';
+      }else{
+        oP.innerHTML = '输入错误';
+      }
+    }
+  }
+  </script>
+</body>
+</html>

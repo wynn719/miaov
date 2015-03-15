@@ -1,0 +1,84 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图片切换器</title>
+  <style> 
+  #outer{ width: 640px; height:400px; margin: 0 auto; } 
+  #box{ position: relative; width: 640px; height: 360px; margin-top: 10px; } 
+  #prev, #next{ position: absolute; top: 50%; z-index: 1000; width: 50px; height: 50px; margin-top: -25px; opacity: .6; font-size: 32px; font-weight: 900; text-align: center; line-height: 50px; text-decoration: none; cursor: pointer; color: white; border: 2px solid white; border-radius: 50%; } 
+  #prev{ left: 0; } 
+  #next{ right: 0; } 
+  #prev:hover, #next:hover{ opacity: 1; } 
+  img{ width: 640px; height: 360px; } 
+  #img-num, #img-info{ position: absolute; width: 640px; margin: 0; padding: 5px 0; text-align: center; background-color: #000; opacity: .6; color: white; } 
+  #img-num{ top: 0; } 
+  #img-info{ bottom: 0; } 
+</style>
+  <script>
+  window.onload = function() {
+    var pImgNum = document.getElementById('img-num'),
+      pImgInfo = document.getElementById('img-info'),
+      imgPic = document.getElementById('pic'),
+      aPrev = document.getElementById('prev'),
+      aNext = document.getElementById('next'),
+      btnCir = document.getElementById('circle'),
+      btnOrder = document.getElementById('order');
+
+    var imgArray = ['images/p1.jpg', 'images/p2.jpg', 'images/p3.jpg', 'images/p4.jpg'];
+    var imgInfo = ['不知道是啥', '老男孩mv', '帅爆了的车', '明明就MV'];
+    var num = 0;
+    var status = true;
+
+    function init() {
+      pImgNum.innerHTML = num + 1 + '/' + imgArray.length;
+      imgPic.src = imgArray[num];
+      pImgInfo.innerHTML = imgInfo[num];
+    }
+    init();
+
+    aNext.onclick = function() {
+      if (status) {
+        (num >= imgArray.length - 1)?(num = 0):(num = num + 1);
+        init();
+      }else {
+        (num >= imgArray.length - 1)?(alert('最前一张了')):(num = num + 1);
+        init();
+      }
+    }
+
+    aPrev.onclick = function() {
+      if (status) {
+        (num <= 0)?(num = imgArray.length-1):(num = num - 1);
+        init();
+      }else{
+        (num <= 0)?(alert('最前一张了')):(num = num - 1);
+        init();
+      }
+    }
+
+    btnCir.onclick = function() {
+      status = true;
+    }
+
+    btnOrder.onclick = function() {
+      status = false;
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="outer">
+    <button id="circle">循环切换</button>
+    <button id="order">顺序切换</button>
+    <div id="box">
+      <a id="prev" href="javascript:;"><</a>
+      <a id="next" href="javascript:;">></a>
+      <img id="pic" src="images/p1.jpg" alt="">
+      <p id="img-num">loading……</p>
+      <p id="img-info">图片信息加载中……</p>
+    </div>
+  </div>
+</body>
+</html>

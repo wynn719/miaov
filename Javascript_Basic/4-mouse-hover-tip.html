@@ -1,0 +1,52 @@
+<!-- 已完成 -->
+<!-- 兼容IE7及以上 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模拟鼠标提示</title>
+  <style> 
+  #outer{position: relative;} 
+  #box{ list-style: none; margin: 0; padding: 0; overflow: hidden; } 
+  #box li{ float: left; width: 60px; height: 60px; margin-right: 10px; margin-bottom: 10px; background-color: yellow; line-height: 60px; text-align: center; } 
+  #info{ position: absolute; display: none; z-index: 1000; width: 300px; height: 200px; border: 1px solid #000; border-radius: 3px; } 
+  #info img{ width: 300px; height: 200px; } 
+</style>
+</head>
+<body>
+  <div id="outer">
+    <ul id="box">
+      <li>选我</li>
+      <li>选我</li>
+      <li>选我</li>
+      <li>选我</li>
+    </ul>
+    <div id="info">
+      <img src="images/p1.jpg" alt="">
+    </div>
+  </div>
+
+  <script>
+  window.onload = function() {
+    var oBox = document.getElementById('box');
+    var aLi = document.getElementsByTagName('li');
+    var value = 0;
+
+    for (var i = 0; i < aLi.length; i++) {
+      aLi[i].index = i;
+      aLi[i].onmouseover = function(){
+        var oDiv = document.getElementById('info');
+        oDiv.style.left = 70 * this.index + 'px';
+        oDiv.style.top = 60 + 'px';
+        oDiv.style.display = 'block';
+      }
+
+      aLi[i].onmouseout = function(){
+        var oDiv = document.getElementById('info');
+        oDiv.style.display = 'none';
+      }
+    };
+  }
+  </script>
+</body>
+</html>

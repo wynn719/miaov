@@ -1,0 +1,210 @@
+<!-- 待完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片切换器带略缩图版本</title>
+	<style>
+	#outer{
+		position: relative;
+		width: 640px;
+		height:400px;
+		margin: 0 auto;
+	}
+	#box{
+		position: relative;
+		width: 640px;
+		height: 360px;
+		margin-top: 10px;
+	}
+	#prev, #next{
+		position: absolute;
+		top: 50%;
+		z-index: 1000;
+		width: 50px;
+		height: 50px;
+		margin-top: -25px;
+		opacity: .6;
+		font-size: 32px;
+		font-weight: 900;
+		text-align: center;
+		line-height: 50px;
+		text-decoration: none;
+		cursor: pointer;
+		color: white;
+		border: 2px solid white;
+		border-radius: 50%;
+	}
+	#prev{
+		left: 0;
+	}
+	#next{
+		right: 0;
+	}
+	#prev:hover, #next:hover{
+		opacity: 1;
+	}
+	img{
+		width: 640px;
+		height: 360px;
+	}
+	#img-num, #img-info{
+		position: absolute;
+		width: 640px;
+		margin: 0;
+		padding: 5px 0;
+		text-align: center;
+		background-color: #000;
+		opacity: .6;
+		color: white;
+		left: 0;
+	}
+	#img-num{
+		top: 0;
+	}
+	#img-info{
+		bottom: 0;
+	}
+
+	#nav{
+		position: relative;
+		width: 90px;
+		margin: 0 auto;
+	}
+	#img-nav{
+		overflow: hidden;
+		list-style: none;
+		margin: 15px auto;
+		padding: 0;
+	}
+	ul li{
+		float: left;
+		margin-right: 10px;
+	}
+	ul li:last-child, ul li.last-li{
+		margin-right: 0;
+	}
+	li a{
+		display: block;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background-color: #000;
+	}
+	.dot-active, li a:hover{
+		background-color: orange;
+	}
+	.thumbnail{
+		position: absolute;
+		display: none;
+		left: 0;
+		bottom: 20px;
+		width: 160px;
+		height: 90px;
+		margin-left: -80px;
+		border: 3px solid #fff;
+		border-radius: 3px;
+	}
+	</style>
+</head>
+<body>
+	<div id="outer">
+		<button id="circle">循环切换</button>
+		<button id="order">顺序切换</button>
+		<div id="box">
+			<a id="prev" href="javascript:;"><</a>
+			<a id="next" href="javascript:;">></a>
+			<img id="pic" src="images/p1.jpg" alt="">
+			<p id="img-num">loading……</p>
+			<p id="img-info">图片信息加载中……</p>
+		</div>
+		<div id="nav">
+			<ul id="img-nav">
+				<li><a></a><img src="" alt="" class="thumbnail"></li>
+				<li><a></a><img src="" alt="" class="thumbnail"></li>
+				<li><a></a><img src="" alt="" class="thumbnail"></li>
+				<li><a></a><img src="" alt="" class="thumbnail"></li>
+				<li class="last-li"><a></a><img src="" alt="" class="thumbnail"></li>
+			</ul>
+		</div>
+	</div>
+	<script>
+	window.onload = function() {
+		var pImgNum = document.getElementById('img-num'),
+			pImgInfo = document.getElementById('img-info'),
+			imgPic = document.getElementById('pic'),
+			aPrev = document.getElementById('prev'),
+			aNext = document.getElementById('next'),
+			btnCir = document.getElementById('circle'),
+			btnOrder = document.getElementById('order'),
+			ali = document.getElementsByTagName('li');
+
+
+		var imgArray = ['images/p1.jpg', 'images/p2.jpg', 'images/p3.jpg', 'images/p4.jpg', 'images/p4.jpg'];
+		var imgInfo = ['不知道是啥', '老男孩mv', '帅爆了的车', '明明就MV' ,'不知道是啥'];
+		var num = 0;
+		var status = true;
+
+		function init() {
+			pImgNum.innerHTML = num + 1 + '/' + imgArray.length;
+			imgPic.src = imgArray[num];
+			pImgInfo.innerHTML = imgInfo[num];
+		}
+		init();
+
+		//左右箭头操作
+		aNext.onclick = function() {
+			if (status) {
+				(num >= imgArray.length - 1)?(num = 0):(num = num + 1);
+				init();
+			}else {
+				(num >= imgArray.length - 1)?(alert('最前一张了')):(num = num + 1);
+				init();
+			}
+		}
+
+		aPrev.onclick = function() {
+			if (status) {
+				(num <= 0)?(num = imgArray.length-1):(num = num - 1);
+				init();
+			}else{
+				(num <= 0)?(alert('最前一张了')):(num = num - 1);
+				init();
+			}
+		}
+
+		//控制循环与不循环
+		btnCir.onclick = function() {
+			status = true;
+		}
+
+		btnOrder.onclick = function() {
+			status = false;
+		}
+
+		//导航点操作
+		for (var i = 0; i < ali.length; i++) {
+			ali[i].index = i;
+			ali[i].onmouseover = function() {
+				var liIndex = this.index;
+				var img = this.getElementsByTagName('img')[0];
+				img.style.left = liIndex*20 + 'px';
+				img.src = imgArray[liIndex];
+				img.style.display = 'block';
+			};
+
+			ali[i].onmouseout = function() {
+				var liIndex = this.index;
+				var img = this.getElementsByTagName('img')[0];
+				img.style.display = 'none';
+			};
+
+			ali[i].onclick = function(){
+				num = this.index;
+				init();
+			}
+		};
+	}
+	</script>
+</body>
+</html>
