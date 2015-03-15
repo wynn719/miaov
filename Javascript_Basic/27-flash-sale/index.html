@@ -1,0 +1,131 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>倒计时抢购商品</title>
+    <style>
+    ul,li{list-style: none;margin: 0;padding: 0;}
+    .goods-list li{position: relative;float:left;width: 162px;height: 297px;margin:10px 5px;background-image: url(images/sorry.png);}
+    li div{position: absolute;top: 0;left: 0;width: 162px;height: 297px;background-color: #fff;border: 1px solid #888888;}
+    li div input{width: 117px;}
+    li a{display:inline-block;text-decoration: none;font-size:12px;font-weight: bold;color: #888888;margin-top:2px;}
+    li img{width: 162px;}
+    li p{margin: 7px;font-size: 12px;text-align: center;}
+    li .price span{color: #ff0000;font-weight: bold;}
+    li .price,li .remainder{color: #888888;font-weight: bold;}
+    .clearfix:after {content:"."; display:block; height:0; visibility:hidden; clear:both; }
+    table, th, td{border: 1px solid #999999;}
+    .brought{width: 508px;border-collapse:collapse;margin: 0 5px;background-color: #dddddd;}
+    td img{width: 100px;}
+    td{padding: 5px;}
+    #total span{color: #ff0000}
+    </style>
+    <script src="../Simlib.js"></script>
+</head>
+<body>
+    <div id="outer">
+        <ul class="goods-list clearfix">
+            <li>
+                <div>
+                    <input type="text" value="March 11, 2015 23:59:59">
+                    <a href="javascript:;">确定</a>
+                    <p class="remainder">剩余00天00小时00分00秒</p>
+                    <img src="images/p1.jpg" alt="">
+                    <p class="info">苹果（Apple）iPhone 6 (A1586) 16GB 金色 移动联通电信4G手机</p>
+                    <p class="price">抢购价：<span>3299.00</span></p>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <input type="text" value="March 11, 2015 23:59:59">
+                    <a href="javascript:;">确定</a>
+                    <p class="remainder">剩余00天00小时00分00秒</p>
+                    <img src="images/p2.jpg" alt="">
+                    <p class="info">摩托罗拉 moto x（x+1）(XT1085) 32GB 黑檀木 移动联通电信4G手机</p>
+                    <p class="price">抢购价：<span>3299.00</span></p>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <input type="text" value="March 12, 2015 00:00:00">
+                    <a href="javascript:;">确定</a>
+                    <p class="remainder">剩余00天00时00分00秒</p>
+                    <img src="images/p3.jpg" alt="">
+                    <p class="info">LG G3 (D857) 32GB国际版 香槟金 移动联通4G手机 双卡双待</p>
+                    <p class="price">抢购价：<span>3199.00</span></p>
+                </div>
+            </li>
+        </ul>
+        <table class="brought">
+            <thead>
+                <tr>
+                    <th>商品名称</th>
+                    <th>价钱</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <h3 id="total">总价: <span>0</span></h3>
+    </div>
+    <script>
+    $(function () {
+        // body...
+        var oOuter = $('outer'),
+            oTotalSpan = oOuter.getElementsByTagName('h3')[0].getElementsByTagName('span')[0], 
+            aLi = oOuter.getElementsByTagName('li'),
+            oTbody = oOuter.getElementsByTagName('tbody')[0];
+
+        for (var i = 0; i < aLi.length; i++) {
+            var oA = aLi[i].getElementsByTagName('a')[0];
+            oA.index = i;
+            oA.onclick = function(){
+                flashSale(aLi[this.index]);
+            }
+        }
+
+        function flashSale(obj){
+            // 获取使用的元素
+            var oDiv = obj.getElementsByTagName('div')[0],
+                oInput = oDiv.getElementsByTagName('input')[0],
+                oA = oDiv.getElementsByTagName('a')[0],
+                oImg = oDiv.getElementsByTagName('img')[0],
+                aP = oDiv.getElementsByTagName('p'),
+                oSpan = aP[2].getElementsByTagName('span')[0];
+            var timeInp = oInput.value,
+                iNow = null,
+                iNew = null,
+                t = 0,
+                str = '';
+
+            oInput.disabled = 'disabled';
+
+            clearInterval(oA.timer);
+            oA.timer = setInterval(function(){
+                iNow = new Date();
+                iNew = new Date(timeInp);
+                t = Math.floor((iNew - iNow)/1000);// iNew - iNow得到的是毫秒
+                if(t <= 0){
+                    clearInterval(oA.timer);
+
+                    shake(oDiv,'left',20,function(){
+                        doMove(oDiv,'top',200,5);
+                        opacity(oDiv, 15,0.05,0,function(){
+                            var trStr = '<tr><td>'+aP[1].innerHTML+'</td><td>'+oSpan.innerHTML+'</td><td><img src="'+oImg.src+'" alt=""></td></tr>';
+                            oTbody.innerHTML += trStr;
+                            oTotalSpan.innerHTML = parseFloat(oTotalSpan.innerHTML) + parseFloat(oSpan.innerHTML); 
+                        });
+                    });
+                }else{
+                    str = '剩余'+Math.floor(t/86400)+'天'+Math.floor(t%86400/3600)+'小时'+Math.floor(t%86400%3600/60)+'分'+Math.floor(t%60)+'秒';
+                    aP[0].innerHTML = str;
+                }
+            },1000);
+        }
+
+    });
+    </script>
+</body>
+</html>
