@@ -1,0 +1,100 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>随机图片滚动</title>
+	<style>
+	ul, li{list-style: none;margin: 0;padding: 0;}
+	a{display: block;width: 100px;height: 50px;text-decoration: none;}
+	#outer{width: 208px;}
+	#outer li{position: relative;display: inline-block;width: 100px;height: 50px;overflow: hidden;}
+	#outer li div{position: absolute;left: 0;top: 0;}
+	img{width: 100px;height: 50px;}  
+	</style>
+	<script src="../Simlib.js"></script>
+</head>
+<body>
+	<div id="outer">
+		<ul>
+			<li>
+				<div>
+					<a href=""><img src="images/1.jpg" alt=""></a>
+					<a href=""><img src="images/2.jpg" alt=""></a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a href=""><img src="images/3.jpg" alt=""></a>
+					<a href=""><img src="images/4.jpg" alt=""></a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a href=""><img src="images/5.jpg" alt=""></a>
+					<a href=""><img src="images/6.jpg" alt=""></a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a href=""><img src="images/7.jpg" alt=""></a>
+					<a href=""><img src="images/8.jpg" alt=""></a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a href=""><img src="images/9.jpg" alt=""></a>
+					<a href=""><img src="images/10.jpg" alt=""></a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a href=""><img src="images/11.jpg" alt=""></a>
+					<a href=""><img src="images/12.jpg" alt=""></a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a href=""><img src="images/1.jpg" alt=""></a>
+					<a href=""><img src="images/2.jpg" alt=""></a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a href=""><img src="images/3.jpg" alt=""></a>
+					<a href=""><img src="images/4.jpg" alt=""></a>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<script>
+	window.onload = function() {
+		var oOuter = $('outer'),
+			aLi = oOuter.getElementsByTagName('li'),
+			timer = null;
+
+		for (var i = 0; i < aLi.length; i++) {
+			run(aLi[i]);
+		};
+
+		function run (aLi) {
+			var obj = aLi.getElementsByTagName('div')[0];
+
+			timer = setTimeout(function(){
+				obj.num = obj.num === 1 ? 0 : 1; 
+				var target = -50 * obj.num;
+				doMove(obj, 'top', target, 1, function() {
+					setTimeout(function(){
+						run(aLi);
+					},1000);
+				});
+			},getRandom(2000)+1000);
+		}
+
+		function getRandom (x) {
+			return Math.floor(Math.random()*x+1000);
+		}
+	}
+	</script>
+</body>
+</html>
