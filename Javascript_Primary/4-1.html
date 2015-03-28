@@ -1,0 +1,87 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟滚动条拓展</title>
+    <style>
+    #outer{position: relative;width: 398px;height: 598px;border-right: none;border: 1px solid #c0c0c0;overflow: hidden;}
+    #content{position: absolute;left: 0;top: 0;width: 378px;height: auto;padding: 5px;}
+    #scroll-bar{position: absolute;right: 0;top: 0;display: none;width: 10px;height: 100%;background-color: #c0c0c0;}
+    #scroll-block{position: absolute;top: 0;left: 0;width: 10px;height: 30px;background-color: orange;cursor: pointer;}
+    </style>
+</head>
+<body>
+    <div id="outer">
+        <div id="content"></div>
+        <div id="scroll-bar">
+            <div id="scroll-block"></div>
+        </div>
+    </div>
+    在这里输入文字：
+    <input name="" id="text" cols="30" rows="10" >
+    <input id="button" type="button" value="发送到上面">
+    <script>
+    window.onload = function () {
+        var oOuter = document.getElementById('outer'),
+            oContent = document.getElementById('content'),
+            oSBar = document.getElementById('scroll-bar'),
+            oSBlock = document.getElementById('scroll-block'),
+            oBtn = document.getElementById('button'),
+            oText = document.getElementById('text');
+
+        var scale = 0.0; // 巨萌的百分比
+
+        // 文字输送
+        oBtn.onclick = function () {
+            oContent.innerHTML = oText.value;
+
+            scale = oOuter.offsetHeight / oContent.offsetHeight;
+
+            if (scale < 1) {
+                oSBar.style.display = 'block';
+                oSBlock.style.height = oSBar.offsetHeight * scale + 'px';
+                drag(oSBlock, oSBar, oContent);
+            }
+        }
+
+        // 封装滚动条事件
+        function drag (obj, bar, con) {
+            obj.onmousedown = function (ev) {
+                var ev = ev || event;
+                // alert(this.offsetTop 此时的offsetTop是相对于父元素的值
+                var disY = ev.clientY - this.offsetTop;
+
+                if(obj.setCapture){
+                    obj.setCapture();
+                }
+
+                document.onmousemove = function (ev) {
+                    var ev = ev || event;
+                    var T = ev.clientY - disY;
+
+                    // 限制滑动范围
+                    (T < 0) && (T = 0);
+                    (T > (bar.offsetHeight - obj.offsetHeight)) && (T = (bar.offsetHeight - obj.offsetHeight));
+
+                    obj.style.top = T + 'px';
+
+                    // 处理滚动文字
+                    con.style.top = -con.offsetHeight * obj.offsetTop / (bar.offsetHeight) + 'px';
+                }
+
+                document.onmouseup = function () {
+                    document.onmousemove = document.onmouseup = null;
+
+                    if(obj.releaseCapture){
+                        obj.releaseCapture();
+                    }
+                }
+
+                return false; // 阻止浏览器默认事件
+            }
+        }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>为留言添加批量删除</title>
+	<script>
+	window.onload = function() {
+
+		var oText = document.getElementById('text1');
+		var oBtn = document.getElementById('btn');
+		var oBtn1 = document.getElementById('btn1');
+		var oUl = document.getElementById('ul1');
+		var on = true; // 当前元素的点击状态
+
+		oBtn.onclick = function() {
+			var oLi = document.createElement('li');
+			oLi.innerHTML = oText.value;
+
+			oLi.onclick = function() {
+				if (on) {
+					this.style.backgroundColor = 'yellow';
+					this.mark = !this.mark;
+					on = !on;
+				} else {
+					this.style.backgroundColor = '';
+					this.mark = false;
+					on = !on;
+				}
+			}
+
+			var oA = document.createElement('a');
+			oA.innerHTML = '删除';
+			oA.href = 'javascript:;';
+
+			if (!oText.value) {
+				alert('请输入留言');
+				return;
+			}
+
+			oA.onclick = function() {
+				oUl.removeChild(this.parentNode);
+			}
+
+			oLi.appendChild(oA);
+
+			/*
+				IE 7中insertBefore()第二个参数为空时报错
+				标准下：insertBefore()第二个参数为空时自动调用appendChild();
+			*/
+			if (oUl.children[0]) {
+				oUl.insertBefore(oLi, oUl.children[0]);
+			} else {
+				oUl.appendChild(oLi);
+			}
+
+			oText.value = '';
+
+
+		}
+
+		oBtn1.onclick = function() {
+			for (var i = 0; i < oUl.childNodes.length; i++) {
+				var obj = oUl.children[i];
+				if (obj.mark) {
+					oUl.removeChild(obj);
+					i--;
+				}
+			}
+		}
+	}
+	</script>
+</head>
+<body>
+	<input type="text" id="text1" /><input type="button" value="留言" id="btn" /><input id="btn1" type="button" value="批量删除">
+	<ul id="ul1"></ul>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>getElementsByClassName拓展版</title>
+	<script>
+	window.onload = function() {
+
+		function getElementsByClassName(parent, tagNa, classNa) {
+			var aTagObj = parent.getElementsByTagName(tagNa),
+				arr = [],
+				classNames = classNa.split(',');
+
+			for (var i = 0; i < classNames.length; i++) {
+				for (var j = 0; j < aTagObj.length; j++) {
+
+					// 得到当前li的类的数组
+					var aC = aTagObj[j].className.split(' ');
+
+					for (var k = 0; k < aC.length; k++) {
+						if (aC[k] === classNames[i]) {
+							arr.push(aTagObj[j]);
+							break;
+						}
+					}
+				}
+			}
+
+			return arr;
+		}
+
+		var arrObj = getElementsByClassName(document, '*', 'box,box2');
+		for (var i = 0; i < arrObj.length; i++) {
+			arrObj[i].style.backgroundColor = 'red';
+		}
+
+	}
+	</script>
+</head>
+<body>
+	<ul id="ul1">
+		<li>11111</li>
+		<li class="box box2">22222</li>
+		<li>3333</li>
+		<li class="box1">444</li>
+		<li>66656</li>
+	</ul>
+	<div class="box">ddd</div>
+	<p>getElementsByClassName(obj, tagname, 'box,box1'),使getElementsByClassName获取指定的类的元素数组</p>
+</body>
+</html>

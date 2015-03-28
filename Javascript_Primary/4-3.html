@@ -1,0 +1,96 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+    <meta charset="UTF-8">
+    <title>鼠标绘制方块</title>
+    <style>
+    p{text-align: center;}
+    #outer{position: relative;width: 600px;height: 400px;border: 1px solid #000;margin: 0 auto;}
+    </style>
+</head>
+<body>
+    <p>在方框上拉出任意方块：</p>
+    <div id="outer"></div>
+    <script>
+    window.onload = function () {
+        var oOuter = document.getElementById('outer');
+
+        draw(oOuter);
+        // 封装画图事件
+        function draw (con) {
+            con.onmousedown = function (ev) {
+                var ev = ev || event;
+
+                var obj = document.createElement('div');
+
+                // 鼠标移动时相对于content块的left和top值
+                var disX = ev.clientX - this.offsetLeft;
+                var disY = ev.clientY - this.offsetTop;
+
+                // 宽 =（ document.ev.clientX- 当前obj的left值）的绝对值
+                // 定义图块
+                obj.style.position = 'absolute';
+                obj.style.border = '1px solid orange';
+                con.appendChild(obj);
+
+                if(con.setCapture){
+                    con.setCapture();
+                }
+
+                document.onmousemove = function (ev) {
+                    var ev = ev || event;
+
+                    // 鼠标相对document在content上的位置
+                    var L = ev.clientX - con.offsetLeft;
+                    var T = ev.clientY - con.offsetTop;
+
+                    // 限制范围
+                    if (L < 0) {
+                        L = 0;
+                    }else{
+                        L = L
+                    }
+
+                    if (T < 0) {
+                        T = 0;
+                    }else{
+                        T = T;
+                    }
+
+
+                    if (L > con.clientWidth) {
+                        L = con.clientWidth;
+                    }else{
+                        L = L;
+                    }
+
+                    if (T > con.clientWidth) {
+                        T = con.clientWidth;
+                    }else{
+                        T = T;
+                    }
+
+                    // 重新确定位置
+                    obj.style.left = disX > L ? (L + 'px') : (disX + 'px');
+                    obj.style.top = disY > T ? (T + 'px') : (disY + 'px');
+
+                    obj.style.width = Math.abs(Math.abs(disX - L) - 2) + 'px';
+                    obj.style.height = Math.abs(Math.abs(disY - T) - 2) + 'px';
+                }
+
+                document.onmouseup = function () {
+                    document.onmousemove = document.onmouseup = null;
+
+                    if(con.releaseCapture){
+                        con.releaseCapture();
+                    }
+                }
+
+                return false; // 阻止浏览器默认事件
+            }
+        }
+    }
+    </script>
+</body>
+</html>

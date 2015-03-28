@@ -1,0 +1,62 @@
+<!-- ;注：个人感觉用css实现比较好，ie7及以上也没有问题 -->
+<!-- 已完成，js实现的在ie下拉动和鼠标滚动会抖动 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>页面两侧固定广告</title>
+    <style>
+    #content{width: 100%;height: 1600px;}
+    #left, #right{width: 100px;height: 300px;background-color: red;}
+    /*css实现方式*/
+    /*#left{position: fixed;left: 0;top: 50%;margin-top: -200px;}
+    #right{position: fixed;right: 0;top: 50%;margin-top: -200px;}*/ 
+    /*配合js实现*/
+    #left{position: absolute;left: 0;top: 0;}
+    #right{position: absolute;right: 0;top: 0;}
+    </style>
+    <script>
+    window.onload = function () {
+        var oLeft = document.getElementById('left'),
+            oRight = document.getElementById('right');
+
+        // 用getStyle方法时在ie下会报错
+        var divHeight = oLeft.offsetHeight;
+        var nowScroll = 0;// 当前滚动值
+
+        var cWidth = document.documentElement.clientWidth;
+        var cHeight = document.documentElement.clientHeight;
+
+        // 初始化
+        oLeft.style.top = cHeight/2 - parseInt(divHeight) / 2 + 'px';
+        oRight.style.top = cHeight/2 - parseInt(divHeight) / 2 + nowScroll + 'px';
+
+        function stick () {
+            cWidth = document.documentElement.clientWidth;
+            cHeight = document.documentElement.clientHeight;
+
+            nowScroll = document.documentElement.scrollTop || document.body.scrollTop;
+
+            var pos = cHeight/2 - parseInt(divHeight) / 2 + nowScroll;
+            
+            oLeft.style.top = pos + 'px';
+            oRight.style.top = pos + 'px';
+        }
+
+        window.onscroll = stick;
+
+        window.onresize = stick;
+    }
+
+    // function getStyle(obj, attr){
+    //     return obj.currentStyle ? obj.currentStyle(attr):getComputedStyle(obj)[attr];
+    // }
+    </script>
+</head>
+<body>
+    <div id="content">
+        <div id="left"></div>
+        <div id="right"></div>
+    </div>
+</body>
+</html>

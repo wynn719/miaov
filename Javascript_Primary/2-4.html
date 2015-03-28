@@ -1,0 +1,56 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择筛选</title>
+    <script>
+    window.onload = function () {
+        var aDls = document.getElementsByTagName('dl');
+        var oDiv = document.getElementById('div1');
+        oDiv.arr = [];// 元素索引
+
+        for (var i = 0; i < aDls.length; i++) {
+            for (var j = 1; j < aDls[i].children.length; j++) {
+                var obj = aDls[i].children[j];
+
+                obj.parentNode.index = i;// 元素索引
+                obj.onclick = function () {
+                    var str = '';
+
+                    oDiv.arr[this.parentNode.index] = this.innerHTML;
+
+                    for(var n in oDiv.arr){
+                        str += oDiv.arr[n] + ' ';
+                    }
+
+                    oDiv.innerHTML = str;
+                };
+            };
+        };
+    }
+    </script>
+</head>
+<body>
+    <dl>
+        <dt>地区</dt>
+        <dd>东城</dd>
+        <dd>西城</dd>
+        <dd>朝阳</dd>
+        <dd>昌平</dd>
+    </dl>
+    <dl>
+        <dt>职位</dt>
+        <dd>美工设计</dd>
+        <dd>前端工程师</dd>
+        <dd>后台开发</dd>
+    </dl>
+    <dl>
+        <dt>工资</dt>
+        <dd>4000</dd>
+        <dd>5000</dd>
+        <dd>6000</dd>
+    </dl>
+    <div id="div1"></div>
+</body>
+</html>

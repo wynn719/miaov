@@ -1,0 +1,60 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    body{margin: 0;padding: 0;}
+    #outer{position: relative;width: 400px;margin: 0 auto;}
+    span{position: relative;color: orange;font-weight: bold;}
+    .show{color: #fff;position: absolute;line-height: 20px;padding: 0 5px;background: #00a6a6;border: 1px solid #000;z-index: 1;white-space: nowrap;top: -23px;left: 10px;position: absolute;display: none;font-weight: normal;}
+
+    </style>
+    <script>
+    // 获得当前元素到页面的距离
+    function isOutRange (obj) {
+        var jsonPos = {left: 0, top: 0};
+        while(obj){
+            jsonPos.left += obj.offsetLeft;
+            jsonPos.top += obj.offsetTop;
+            obj = obj.offsetParent;
+        }
+        
+        return jsonPos;
+    }
+
+    window.onload = function () {
+        var oOuter = document.getElementById('outer');
+        var oSpan = document.getElementById('span');
+        var oShow = document.getElementById('show');
+
+        for (var i = 0; i < oOuter.children.length; i++) {
+            var obj = oOuter.children[i];
+            // 生成子元素
+            var oShow = document.createElement('span');
+            oShow.className = 'show';
+            oShow.innerHTML = obj.title;
+            obj.appendChild(oShow);
+
+            oOuter.children[i].onmouseover = function () {
+                var _pos = isOutRange(this);
+                if (_pos.top < 10) {
+                    this.children[0].style.top = '20px';
+                };
+                this.children[0].style.display = 'block';
+            };
+
+            oOuter.children[i].onmouseout = function () {
+                this.children[0].style.display = 'none';
+            };
+        };
+    };
+    </script>
+</head>
+<body>
+    <div id="outer">
+        <span title="JavaScript是面向Web的编程语言，绝大多数现代网站都使用了">JavaScript</span>是面向Web的编程语言，绝大多数现代网站都使用了<span title="JavaScript">JavaScript</span>，并且所有的现代Web浏览器——基于桌面系统、游戏机、平板电脑和智能手机的浏览器——均包含了<span title="JavaScript">JavaScript</span>解释器。这使得<span title="JavaScript">JavaScript</span>能够称得上史上最广泛的编程语言。<span title="JavaScript">JavaScript</span>也是前端开发工程师必须掌握的三种技能之一，描述网页内容的<span title="HTML">HTML</span>、描述网页样式的<span title="CSS">CSS</span>以及描述网页行为的<span title="JavaScript">JavaScript</span>
+    </div>
+</body>
+</html>

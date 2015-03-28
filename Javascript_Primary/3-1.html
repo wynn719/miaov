@@ -1,0 +1,66 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>键盘控制div移动，解决停顿问题</title>
+    <style>
+    #div{position: absolute;left: 0;top: 0;width: 100px;height: 100px;background-color: red;}
+    </style>
+    <script>
+    // 思路：将keydown按住时的重复事件转换为单次点击事件，由定时器来完成重复该事件
+    window.onload = function () {
+        var oDiv = document.getElementById('div');
+        var keyStatus = [false,false,false,false];// 记录键盘按下状态
+
+        setInterval(function() {
+            keyStatus[0] && (oDiv.style.left = oDiv.offsetLeft - 10 + 'px');
+            keyStatus[1] && (oDiv.style.top = oDiv.offsetTop - 10 + 'px');
+            keyStatus[2] && (oDiv.style.left = oDiv.offsetLeft + 10 + 'px');
+            keyStatus[3] && (oDiv.style.top = oDiv.offsetTop + 10 + 'px');
+        }, 30);
+
+        document.onkeydown = function (ev) {
+            var ev = ev || event;
+
+            switch(ev.keyCode){
+                case 37:
+                    keyStatus[0] = true;
+                    break;
+                case 38:
+                    keyStatus[1] = true;
+                    break;
+                case 39:
+                    keyStatus[2] = true;
+                    break;
+                case 40:
+                    keyStatus[3] = true;
+                    break;
+            }
+        }
+
+        document.onkeyup = function (ev) {
+            var ev = ev || event;
+
+            switch(ev.keyCode){
+                case 37:
+                    keyStatus[0] = false;
+                    break;
+                case 38:
+                    keyStatus[1] = false;
+                    break;
+                case 39:
+                    keyStatus[2] = false;
+                    break;
+                case 40:
+                    keyStatus[3] = false;
+                    break;
+            }
+        }
+    }
+    </script>
+</head>
+<body>
+    <div id="div"></div>   
+</body>
+</html>

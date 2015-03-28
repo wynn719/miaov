@@ -1,0 +1,58 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>碰撞检测-重合检测</title>
+    <style>
+    #div1{position: absolute;top: 0;left: 0;z-index: 1000;width: 100px;height: 100px;background-color: #8080ff;}
+    #div2{position: absolute;top: 409px;left: 490px;width: 100px;height: 100px;background-color: #c0c0c0;}
+    </style>
+</head>
+<body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+    <script>
+    window.onload = function () {
+        var oDiv1 = document.getElementById('div1'),
+            oDiv2 = document.getElementById('div2');
+
+        drag(oDiv1, oDiv2);
+
+        // 封装拖拽事件
+        function drag (a, b) {
+            a.onmousedown = function (ev) {
+                var ev = ev || event;
+                var disY = ev.clientY - this.offsetTop;
+                var disX = ev.clientX - this.offsetLeft;
+
+                a.setCapture && (a.setCapture());
+
+                document.onmousemove = function (ev) {
+                    var ev = ev || event;
+                    var T = ev.clientY - disY;
+                    var L = ev.clientX - disX;
+
+                    a.style.top = T + 'px';
+                    a.style.left = L + 'px';
+
+                    // 处理碰撞
+                    if(T === b.offsetTop && L === b.offsetLeft){
+                        document.onmousemove = document.onmouseup = null;
+                        alert('融合');
+                    }
+                }
+
+                document.onmouseup = function () {
+                    document.onmousemove = document.onmouseup = null;
+
+                    a.releaseCapture && a.releaseCapture();
+                }
+
+                return false; // 阻止浏览器默认事件
+            }
+        }
+    }
+    </script>
+</body>
+</html>

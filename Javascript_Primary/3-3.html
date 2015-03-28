@@ -1,0 +1,96 @@
+<!-- 已完成 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟select多选</title>
+    <style>
+    #div{width: 290px;height: 20px;border: 1px solid orange;line-height: 20px;padding: 5px;}
+    #ul{display: none;width: 300px;margin: 0;padding: 0;border: 1px solid orange;margin-top: -1px;}
+    li{width: 290px;line-height: 20px;padding: 5px;cursor: pointer;}
+    li:hover,li.active{background-color: orange;color: white;}
+    </style>
+    <script>
+    window.onload = function () {
+        // ctrl 17
+
+        var oDiv = document.getElementById('div'),
+            oUl = document.getElementById('ul'),
+            aLi = document.getElementsByTagName('li'),
+            lastClick = null,
+            arr = [], // 数据
+            ctrlStatu = false; // ctrl键状态
+
+        oDiv.onclick = function (ev) {
+            var ev = ev || event;
+
+            oUl.style.display = 'block';
+            ev.cancelBubble = true;// 阻止事件冒泡
+        }
+
+        document.onkeydown = function (ev) {
+            var ev = ev || event;
+            ev.keyCode === 17 && (ctrlStatu = true);
+        }
+
+        document.onkeyup = function (ev) {
+            var ev = ev || event;
+            ctrlStatu = false;
+        }
+
+        document.onclick = function (ev) {
+            if (!ctrlStatu){
+                oUl.style.display = 'none';
+                arr = [];
+            }            
+        }
+
+        for (var i = 0; i < aLi.length; i++) {
+            aLi[i].index = i;
+            aLi[i].onclick = function (ev) {
+                if (ctrlStatu) {
+                    if (this.className === 'active') {
+                        // 取消点击
+                        for (var i = 0; i < arr.length; i++) {
+                            if (arr[i] === this.innerHTML) {
+                                arr.splice(i, 1);
+                            }
+                        }
+
+                        oDiv.innerHTML = arr.join(','); 
+                        this.className = '';
+                    }else{
+                        arr.push(this.innerHTML);
+                        this.className = 'active';
+                        oDiv.innerHTML = arr.join(',');   
+                    }
+                }else{
+                    oDiv.innerHTML = this.innerHTML;
+                    lastClick && (lastClick.className = '');
+
+                    // 重置样式
+                    for (var i = 0; i < aLi.length; i++) {
+                        aLi[i].className = '';
+                    };
+
+                    this.className = 'active';
+                    lastClick = this;
+                    ctrlStatu = false;
+                }
+            }
+        }
+    }
+    </script>
+</head>
+<body>
+    <div id="div">按住ctrl多选</div>
+    <ul id="ul">
+        <li>宋体</li>
+        <li>黑体</li>
+        <li>楷体</li>
+        <li>微软雅黑</li>
+        <li>新宋体</li>
+        <li>仿宋</li>
+    </ul>
+</body>
+</html>
