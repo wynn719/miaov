@@ -14,49 +14,50 @@
     <script>
     window.onload = function () {
         var oDiv = document.getElementById('div');
-        var oBtn = document.getElementById('button')
+        var oBtn = document.getElementById('button');
+        var on = false;
         var arrLeft = [];
         var arrTop = [];
 
-        drag(oDiv);
-
         oBtn.onclick = function () {
-            recover(oDiv);
-        }
-
-        // 封装拖拽事件
-        function drag (a) {
-            a.onmousedown = function (ev) {
-                var ev = ev || event;
-                var disY = ev.clientY - this.offsetTop;
-                var disX = ev.clientX - this.offsetLeft;
-
-                a.setCapture && (a.setCapture());
-
-                document.onmousemove = function (ev) {
-                    var ev = ev || event;
-                    var T = ev.clientY - disY;
-                    var L = ev.clientX - disX;
-
-                    a.style.top = T + 'px';
-                    a.style.left = L + 'px';
-
-                    arrLeft.push(L);
-                    arrTop.push(T);
-                }
-
-                document.onmouseup = function () {
-                    document.onmousemove = document.onmouseup = null;
-
-                    a.releaseCapture && a.releaseCapture();
-                    console.log(arrLeft);
-                }
-
-                return false; // 阻止浏览器默认事件
+            if (on) {
+                recover(oDiv);
             }
         }
 
+        oDiv.onmousedown = drag;
+
+        function drag(ev) {
+            
+            var ev = ev || event;
+            var disY = ev.clientY - this.offsetTop;
+            var disX = ev.clientX - this.offsetLeft;
+
+            oDiv.setCapture && (oDiv.setCapture());
+
+            document.onmousemove = function (ev) {
+                var ev = ev || event;
+                var T = ev.clientY - disY;
+                var L = ev.clientX - disX;
+
+                oDiv.style.top = T + 'px';
+                oDiv.style.left = L + 'px';
+
+                arrLeft.push(L);
+                arrTop.push(T);
+            }
+
+            document.onmouseup = function () {
+                document.onmousemove = document.onmouseup = null;
+                oDiv.releaseCapture && oDiv.releaseCapture();
+                on = true;
+            }
+
+            return false; // 阻止浏览器默认事件
+        }
+
         function recover (a) {
+            oDiv.onmousedown = null;
             var num = arrLeft.length;
             var timer = null;
 
@@ -65,7 +66,9 @@
                 if (num < 0) {
                     clearInterval(timer);
                     arrTop.length = 0;
-                    karrLeft.length = 0;
+                    arrLeft.length = 0;
+                    oDiv.onmousedown = drag;
+                     on = false;
                 };
 
                  a.style.top = arrTop[num] + 'px';

@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-    <p>在方框上拉出任意方块：</p>
+    <p>在方框上拉出任意：</p>
     <div id="outer"></div>
     <script>
     window.onload = function () {
@@ -65,8 +65,8 @@
                         L = L;
                     }
 
-                    if (T > con.clientWidth) {
-                        T = con.clientWidth;
+                    if (T > con.clientHeight) {
+                        T = con.clientHeight;
                     }else{
                         T = T;
                     }
